@@ -50,6 +50,12 @@ This section which summarises the most useful aspects of what I think I shall ne
     - `&self` - method takes an immutable reference as the data is only being read.
     - `&mut self` - method takes a mutable reference as it is changing data.
 - Associated functions are also declared within a type's `impl` block but they do not take a `self` argument and do not need an instance. They are like static methods in Java. They are invoked like `Rectangle::square(3)`
+- Enums are very useful when you have a closed set of variants:-
+    - You can store any type of data inside them even other enums.
+    - You can define methods on enums.
+    - [Option](https://doc.rust-lang.org/stable/std/option/enum.Option.html) is a very useful enum in Rust and its useful to get to know all its methods.
+- Enums have an advantage over structs in that each variant can store data fields of different types yet the enum variants themselves are all the same type - so you can write a function that takes the enum type and pass any of the variants in, yet they may contain different types of data.
+- Using pattern `match` blocks when handling enums (eg. `Option<T>`) is a very common coding pattern in Rust.
 
 
 
@@ -382,9 +388,20 @@ fn value_in_cents(coin: Coin) -> u8 {
 
 The Quarter match arm above demonstrates how to bind to values within the match pattern - the `state` variable will bind to the value of that quarter’s state. 
 
+Combining match and enums is useful in many situations and is a common pattern in Rust code.
+
 ### Pattern Matching on Option<T>
 
-...
+Option has two variants - Some or None - and the common approach to handling an Option is with a match block.
+
+```rust
+fn plus_one(x: Option<i32>) -> Option<i32> {
+    match x {
+        None => None,
+        Some(i) => Some(i + 1),
+    }
+}
+```
 
 
 ## Structs
@@ -607,7 +624,7 @@ let m = Message::Write(String::from("hello"));
 m.call();
 ```
 
-The call() method uses &self to get the value that it was invoked on, in this example a String.
+The `call()`` method uses `&self` to get the value that it was invoked on, in this example a String.
 
 An important enum in the standard library is Option which replaces the value null - which Rust does not have and which therefore makes Rust safer. It either has value or it doesn't and is so widely used that it is included in the prelude so you don't ever need to import it.
 
