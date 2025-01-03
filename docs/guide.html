@@ -1,0 +1,1695 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>body {
+  max-width: 980px;
+  margin: 16px auto;
+}
+
+body .markdown-body
+{
+  padding: 45px;
+}
+
+@font-face {
+  font-family: fontawesome-mini;
+  src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+
+.markdown-body {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  color: #333333;
+  overflow: hidden;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.markdown-body a {
+  background: transparent;
+}
+
+.markdown-body a:active,
+.markdown-body a:hover {
+  outline: 0;
+}
+
+.markdown-body b,
+.markdown-body strong {
+  font-weight: bold;
+}
+
+.markdown-body mark {
+  background: #ff0;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body sub,
+.markdown-body sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+.markdown-body sup {
+  top: -0.5em;
+}
+.markdown-body sub {
+  bottom: -0.25em;
+}
+
+.markdown-body h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.markdown-body img {
+  border: 0;
+}
+
+.markdown-body hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+
+.markdown-body pre {
+  overflow: auto;
+}
+
+.markdown-body code,
+.markdown-body kbd,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+.markdown-body input {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+.markdown-body html input[disabled] {
+  cursor: default;
+}
+
+.markdown-body input {
+  line-height: normal;
+}
+
+.markdown-body input[type="checkbox"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.markdown-body table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.markdown-body td,
+.markdown-body th {
+  padding: 0;
+}
+
+.markdown-body .codehilitetable,
+.markdown-body .highlighttable {
+  border: 0;
+  border-spacing: 0;
+}
+
+.markdown-body .codehilitetable tr,
+.markdown-body .highlighttable {
+  border: 0;
+}
+
+.markdown-body .codehilitetable pre,
+.markdown-body .codehilitetable div.codehilite,
+.markdown-body .highlighttable pre,
+.markdown-body .highlighttable div.highlight {
+  margin: 0;
+}
+
+.markdown-body .linenos,
+.markdown-body .code,
+.markdown-body .codehilitetable td,
+.markdown-body .highlighttable td {
+  border: 0;
+  padding: 0;
+}
+
+.markdown-body td:not(.linenos) .linenodiv {
+  padding: 0 !important;
+}
+
+.markdown-body .code {
+  width: 100%;
+}
+
+.markdown-body .linenos div pre,
+.markdown-body .linenodiv pre,
+.markdown-body .linenodiv {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-left-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.markdown-body .code div pre,
+.markdown-body .code div {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-right-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -moz-border-radius-bottomright: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.markdown-body * {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body input {
+  font: 13px Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.4;
+}
+
+.markdown-body a {
+  color: #4183c4;
+  text-decoration: none;
+}
+
+.markdown-body a:hover,
+.markdown-body a:focus,
+.markdown-body a:active {
+  text-decoration: underline;
+}
+
+.markdown-body hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.markdown-body hr:before,
+.markdown-body hr:after {
+  display: table;
+  content: " ";
+}
+
+.markdown-body hr:after {
+  clear: both;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 1.1;
+}
+
+.markdown-body h1 {
+  font-size: 30px;
+}
+
+.markdown-body h2 {
+  font-size: 21px;
+}
+
+.markdown-body h3 {
+  font-size: 16px;
+}
+
+.markdown-body h4 {
+  font-size: 14px;
+}
+
+.markdown-body h5 {
+  font-size: 12px;
+}
+
+.markdown-body h6 {
+  font-size: 11px;
+}
+
+.markdown-body blockquote {
+  margin: 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body ol ol,
+.markdown-body ul ol {
+  list-style-type: lower-roman;
+}
+
+.markdown-body ul ul ol,
+.markdown-body ul ol ol,
+.markdown-body ol ul ol,
+.markdown-body ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+.markdown-body dd {
+  margin-left: 0;
+}
+
+.markdown-body code,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+}
+
+.markdown-body pre {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body kbd {
+  background-color: #e7e7e7;
+  background-image: -moz-linear-gradient(#fefefe, #e7e7e7);
+  background-image: -webkit-linear-gradient(#fefefe, #e7e7e7);
+  background-image: linear-gradient(#fefefe, #e7e7e7);
+  background-repeat: repeat-x;
+  border-radius: 2px;
+  border: 1px solid #cfcfcf;
+  color: #000;
+  padding: 3px 5px;
+  line-height: 10px;
+  font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  display: inline-block;
+}
+
+.markdown-body>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+.markdown-body .headerlink {
+  font: normal 400 16px fontawesome-mini;
+  vertical-align: middle;
+  margin-left: -16px;
+  float: left;
+  display: inline-block;
+  text-decoration: none;
+  opacity: 0;
+  color: #333;
+}
+
+.markdown-body .headerlink:focus {
+  outline: none;
+}
+
+.markdown-body h1 .headerlink {
+  margin-top: 0.8rem;
+}
+
+.markdown-body h2 .headerlink,
+.markdown-body h3 .headerlink {
+  margin-top: 0.6rem;
+}
+
+.markdown-body h4 .headerlink {
+  margin-top: 0.2rem;
+}
+
+.markdown-body h5 .headerlink,
+.markdown-body h6 .headerlink {
+  margin-top: 0;
+}
+
+.markdown-body .headerlink:hover,
+.markdown-body h1:hover .headerlink,
+.markdown-body h2:hover .headerlink,
+.markdown-body h3:hover .headerlink,
+.markdown-body h4:hover .headerlink,
+.markdown-body h5:hover .headerlink,
+.markdown-body h6:hover .headerlink {
+  opacity: 1;
+  text-decoration: none;
+}
+
+.markdown-body h1 {
+  padding-bottom: 0.3em;
+  font-size: 2.25em;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.75em;
+  line-height: 1.225;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h3 {
+  font-size: 1.5em;
+  line-height: 1.43;
+}
+
+.markdown-body h4 {
+  font-size: 1.25em;
+}
+
+.markdown-body h5 {
+  font-size: 1em;
+}
+
+.markdown-body h6 {
+  font-size: 1em;
+  color: #777;
+}
+
+.markdown-body p,
+.markdown-body blockquote,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body dl,
+.markdown-body table,
+.markdown-body pre,
+.markdown-body .admonition {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.markdown-body hr {
+  height: 4px;
+  padding: 0;
+  margin: 16px 0;
+  background-color: #e7e7e7;
+  border: 0 none;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 2em;
+}
+
+.markdown-body ul ul,
+.markdown-body ul ol,
+.markdown-body ol ol,
+.markdown-body ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body li>p {
+  margin-top: 16px;
+}
+
+.markdown-body dl {
+  padding: 0;
+}
+
+.markdown-body dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.markdown-body blockquote {
+  padding: 0 15px;
+  color: #777;
+  border-left: 4px solid #ddd;
+}
+
+.markdown-body blockquote>:first-child {
+  margin-top: 0;
+}
+
+.markdown-body blockquote>:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+}
+
+.markdown-body table th {
+  font-weight: bold;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  padding: 6px 13px;
+  border: 1px solid #ddd;
+}
+
+.markdown-body table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body code,
+.markdown-body samp {
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  border-radius: 3px;
+}
+
+.markdown-body code:not(.highlight):not(.codehilite), .markdown-body samp {
+  background-color: rgba(0,0,0,0.04);
+}
+
+.markdown-body code:before,
+.markdown-body code:after {
+  letter-spacing: -0.2em;
+  content: "\00a0";
+}
+
+.markdown-body pre>code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+
+.markdown-body .codehilite,
+.markdown-body .highlight {
+  margin-bottom: 16px;
+}
+
+.markdown-body .codehilite pre,
+.markdown-body .highlight pre,
+.markdown-body pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+}
+
+.markdown-body .codehilite,
+.markdown-body .highlight,
+.markdown-body pre {
+  border-radius: 3px;
+}
+
+.markdown-body :not(.highlight) > pre {
+  background-color: #f7f7f7;
+}
+
+.markdown-body .codehilite pre,
+.markdown-body .highlight pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+
+.markdown-body pre {
+  word-wrap: normal;
+}
+
+.markdown-body pre code {
+  display: inline;
+  max-width: initial;
+  padding: 0;
+  margin: 0;
+  overflow: initial;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+
+.markdown-body pre code:before,
+.markdown-body pre code:after {
+  content: normal;
+}
+
+/* Admonition */
+.markdown-body .admonition {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  position: relative;
+  border-radius: 3px;
+  border: 1px solid #e0e0e0;
+  border-left: 6px solid #333;
+  padding: 10px 10px 10px 30px;
+}
+
+.markdown-body .admonition table {
+  color: #333;
+}
+
+.markdown-body .admonition p {
+  padding: 0;
+}
+
+.markdown-body .admonition-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.markdown-body .admonition>.admonition-title {
+  color: #333;
+}
+
+.markdown-body .attention>.admonition-title {
+  color: #a6d796;
+}
+
+.markdown-body .caution>.admonition-title {
+  color: #d7a796;
+}
+
+.markdown-body .hint>.admonition-title {
+  color: #96c6d7;
+}
+
+.markdown-body .danger>.admonition-title {
+  color: #c25f77;
+}
+
+.markdown-body .question>.admonition-title {
+  color: #96a6d7;
+}
+
+.markdown-body .note>.admonition-title {
+  color: #d7c896;
+}
+
+.markdown-body .admonition:before,
+.markdown-body .attention:before,
+.markdown-body .caution:before,
+.markdown-body .hint:before,
+.markdown-body .danger:before,
+.markdown-body .question:before,
+.markdown-body .note:before {
+  font: normal normal 16px fontawesome-mini;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  line-height: 1.5;
+  color: #333;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.markdown-body .admonition:before {
+  content: "\f056\00a0";
+  color: 333;
+}
+
+.markdown-body .attention:before {
+  content: "\f058\00a0";
+  color: #a6d796;
+}
+
+.markdown-body .caution:before {
+  content: "\f06a\00a0";
+  color: #d7a796;
+}
+
+.markdown-body .hint:before {
+  content: "\f05a\00a0";
+  color: #96c6d7;
+}
+
+.markdown-body .danger:before {
+  content: "\f057\00a0";
+  color: #c25f77;
+}
+
+.markdown-body .question:before {
+  content: "\f059\00a0";
+  color: #96a6d7;
+}
+
+.markdown-body .note:before {
+  content: "\f040\00a0";
+  color: #d7c896;
+}
+
+.markdown-body .admonition::after {
+  content: normal;
+}
+
+.markdown-body .attention {
+  border-left: 6px solid #a6d796;
+}
+
+.markdown-body .caution {
+  border-left: 6px solid #d7a796;
+}
+
+.markdown-body .hint {
+  border-left: 6px solid #96c6d7;
+}
+
+.markdown-body .danger {
+  border-left: 6px solid #c25f77;
+}
+
+.markdown-body .question {
+  border-left: 6px solid #96a6d7;
+}
+
+.markdown-body .note {
+  border-left: 6px solid #d7c896;
+}
+
+.markdown-body .admonition>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body .admonition>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* progress bar*/
+.markdown-body .progress {
+  display: block;
+  width: 300px;
+  margin: 10px 0;
+  height: 24px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #ededed;
+  position: relative;
+  box-shadow: inset -1px 1px 3px rgba(0, 0, 0, .1);
+}
+
+.markdown-body .progress-label {
+  position: absolute;
+  text-align: center;
+  font-weight: bold;
+  width: 100%; margin: 0;
+  line-height: 24px;
+  color: #333;
+  text-shadow: 1px 1px 0 #fefefe, -1px -1px 0 #fefefe, -1px 1px 0 #fefefe, 1px -1px 0 #fefefe, 0 1px 0 #fefefe, 0 -1px 0 #fefefe, 1px 0 0 #fefefe, -1px 0 0 #fefefe, 1px 1px 2px #000;
+  -webkit-font-smoothing: antialiased !important;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.markdown-body .progress-bar {
+  height: 24px;
+  float: left;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #96c6d7;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), inset 0 -1px 0 rgba(0, 0, 0, .1);
+  background-size: 30px 30px;
+  background-image: -webkit-linear-gradient(
+    135deg, rgba(255, 255, 255, .4) 27%,
+    transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%,
+    transparent 77%, transparent
+  );
+  background-image: -moz-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -ms-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -o-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+}
+
+.markdown-body .progress-100plus .progress-bar {
+  background-color: #a6d796;
+}
+
+.markdown-body .progress-80plus .progress-bar {
+  background-color: #c6d796;
+}
+
+.markdown-body .progress-60plus .progress-bar {
+  background-color: #d7c896;
+}
+
+.markdown-body .progress-40plus .progress-bar {
+  background-color: #d7a796;
+}
+
+.markdown-body .progress-20plus .progress-bar {
+  background-color: #d796a6;
+}
+
+.markdown-body .progress-0plus .progress-bar {
+  background-color: #c25f77;
+}
+
+.markdown-body .candystripe-animate .progress-bar{
+  -webkit-animation: animate-stripes 3s linear infinite;
+  -moz-animation: animate-stripes 3s linear infinite;
+  animation: animate-stripes 3s linear infinite;
+}
+
+@-webkit-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@-moz-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+.markdown-body .gloss .progress-bar {
+  box-shadow:
+    inset 0 4px 12px rgba(255, 255, 255, .7),
+    inset 0 -12px 0 rgba(0, 0, 0, .05);
+}
+
+/* MultiMarkdown Critic Blocks */
+.markdown-body .critic_mark {
+  background: #ff0;
+}
+
+.markdown-body .critic_delete {
+  color: #c82829;
+  text-decoration: line-through;
+}
+
+.markdown-body .critic_insert {
+  color: #718c00 ;
+  text-decoration: underline;
+}
+
+.markdown-body .critic_comment {
+  color: #8e908c;
+  font-style: italic;
+}
+
+.markdown-body .headeranchor {
+  font: normal normal 16px fontawesome-mini;
+  line-height: 1;
+  display: inline-block;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.headeranchor:before {
+  content: '\e157';
+}
+
+.markdown-body .task-list-item {
+  list-style-type: none;
+}
+
+.markdown-body .task-list-item+.task-list-item {
+  margin-top: 3px;
+}
+
+.markdown-body .task-list-item input {
+  margin: 0 4px 0.25em -20px;
+  vertical-align: middle;
+}
+
+.markdown-body diagram-div, .markdown-body div.uml-sequence-diagram, .markdown-body, div.uml-flowchart {
+  overflow: auto;
+}
+
+/* Media */
+@media only screen and (min-width: 480px) {
+  .markdown-body {
+    font-size:14px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .markdown-body {
+    font-size:16px;
+  }
+}
+
+@media print {
+  .markdown-body * {
+    background: transparent !important;
+    color: black !important;
+    filter:none !important;
+    -ms-filter: none !important;
+  }
+
+  .markdown-body {
+    font-size:12pt;
+    max-width:100%;
+    outline:none;
+    border: 0;
+  }
+
+  .markdown-body a,
+  .markdown-body a:visited {
+    text-decoration: underline;
+  }
+
+  .markdown-body .headeranchor-link {
+    display: none;
+  }
+
+  .markdown-body a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  .markdown-body abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+
+  .markdown-body .ir a:after,
+  .markdown-body a[href^="javascript:"]:after,
+  .markdown-body a[href^="#"]:after {
+    content: "";
+  }
+
+  .markdown-body pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .markdown-body pre,
+  .markdown-body blockquote {
+    border: 1px solid #999;
+    padding-right: 1em;
+    page-break-inside: avoid;
+  }
+
+  .markdown-body .progress,
+  .markdown-body .progress-bar {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .markdown-body .progress {
+    border: 1px solid #ddd;
+  }
+
+  .markdown-body .progress-bar {
+    height: 22px;
+    border-right: 1px solid #ddd;
+  }
+
+  .markdown-body tr,
+  .markdown-body img {
+    page-break-inside: avoid;
+  }
+
+  .markdown-body img {
+    max-width: 100% !important;
+  }
+
+  .markdown-body p,
+  .markdown-body h2,
+  .markdown-body h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .markdown-body h2,
+  .markdown-body h3 {
+    page-break-after: avoid;
+  }
+}
+</style><style>/*GitHub*/
+.highlight {background-color:#f7f7f7;color:#333333;}
+.highlight .hll {background-color:#ffffcc;}
+.highlight .c{color:#999988;font-style:italic}
+.highlight .err{color:#a61717;background-color:#e3d2d2}
+.highlight .k{font-weight:bold}
+.highlight .o{font-weight:bold}
+.highlight .cm{color:#999988;font-style:italic}
+.highlight .cp{color:#999999;font-weight:bold}
+.highlight .c1{color:#999988;font-style:italic}
+.highlight .cs{color:#999999;font-weight:bold;font-style:italic}
+.highlight .gd{color:#000000;background-color:#ffdddd}
+.highlight .ge{font-style:italic}
+.highlight .gr{color:#aa0000}
+.highlight .gh{color:#999999}
+.highlight .gi{color:#000000;background-color:#ddffdd}
+.highlight .go{color:#888888}
+.highlight .gp{color:#555555}
+.highlight .gs{font-weight:bold}
+.highlight .gu{color:#800080;font-weight:bold}
+.highlight .gt{color:#aa0000}
+.highlight .kc{font-weight:bold}
+.highlight .kd{font-weight:bold}
+.highlight .kn{font-weight:bold}
+.highlight .kp{font-weight:bold}
+.highlight .kr{font-weight:bold}
+.highlight .kt{color:#445588;font-weight:bold}
+.highlight .m{color:#009999}
+.highlight .s{color:#dd1144}
+.highlight .n{color:#333333}
+.highlight .na{color:teal}
+.highlight .nb{color:#0086b3}
+.highlight .nc{color:#445588;font-weight:bold}
+.highlight .no{color:teal}
+.highlight .ni{color:purple}
+.highlight .ne{color:#990000;font-weight:bold}
+.highlight .nf{color:#990000;font-weight:bold}
+.highlight .nn{color:#555555}
+.highlight .nt{color:navy}
+.highlight .nv{color:teal}
+.highlight .ow{font-weight:bold}
+.highlight .w{color:#bbbbbb}
+.highlight .mf{color:#009999}
+.highlight .mh{color:#009999}
+.highlight .mi{color:#009999}
+.highlight .mo{color:#009999}
+.highlight .sb{color:#dd1144}
+.highlight .sc{color:#dd1144}
+.highlight .sd{color:#dd1144}
+.highlight .s2{color:#dd1144}
+.highlight .se{color:#dd1144}
+.highlight .sh{color:#dd1144}
+.highlight .si{color:#dd1144}
+.highlight .sx{color:#dd1144}
+.highlight .sr{color:#009926}
+.highlight .s1{color:#dd1144}
+.highlight .ss{color:#990073}
+.highlight .bp{color:#999999}
+.highlight .vc{color:teal}
+.highlight .vg{color:teal}
+.highlight .vi{color:teal}
+.highlight .il{color:#009999}
+.highlight .gc{color:#999;background-color:#EAF2F5}
+</style><title>guide</title></head><body><article class="markdown-body"><h1 id="rust-guide">Rust Guide<a class="headerlink" href="#rust-guide" title="Permanent link"></a></h1>
+<p>A summary of my Rust learnings largely guided by reading the offical Rust guides:-</p>
+<p><a href="https://doc.rust-lang.org/book/title-page.html">The Rust Programming Language</a>    <br />
+<a href="https://doc.rust-lang.org/reference/introduction.html">The Rust Language Reference</a>     </p>
+<div class="highlight"><pre><span class="c1">// key for code sample comments</span>
+
+<span class="err">✅</span><span class="w">     </span><span class="n">code</span><span class="w"> </span><span class="n">compiles</span><span class="w"></span>
+<span class="err">❌</span><span class="w">     </span><span class="n">compiler</span><span class="w"> </span><span class="n">error</span><span class="o">:</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="n">does</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">compile</span><span class="w"></span>
+<span class="err">⚠️</span><span class="w">     </span><span class="n">compiler</span><span class="w"> </span><span class="n">warning</span><span class="o">:</span><span class="w"> </span><span class="n">compiles</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">does</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">follow</span><span class="w"> </span><span class="n">convention</span><span class="w"></span>
+</pre></div>
+
+<hr />
+<!--TOC-->
+
+<h2 id="tldr">TL;DR<a class="headerlink" href="#tldr" title="Permanent link"></a></h2>
+<p>This section which summarises the most useful aspects of what I think I shall need to keep in mind when writing code. It will change as my understanding evolves.</p>
+<h4 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link"></a></h4>
+<p>Everything is immutable by default so use <code>mut</code> to create a mutable variable.</p>
+<div class="highlight"><pre><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;I can change&quot;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+
+<h3 id="ownership">Ownership<a class="headerlink" href="#ownership" title="Permanent link"></a></h3>
+<h3 id="strings">Strings<a class="headerlink" href="#strings" title="Permanent link"></a></h3>
+<h2 id="programming-concepts">Programming Concepts<a class="headerlink" href="#programming-concepts" title="Permanent link"></a></h2>
+<p>This section is an ad-hoc collection of features that were most useful to me learning Rust.</p>
+<h3 id="variables-constants">Variables &amp; Constants<a class="headerlink" href="#variables-constants" title="Permanent link"></a></h3>
+<div class="highlight"><pre><span class="c1">// immutable variables</span>
+<span class="kd">let</span><span class="w"> </span><span class="n">immutable_ref</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hello&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">immutable_ref</span><span class="o">=</span><span class="w"> </span><span class="s">&quot;goodbye&quot;</span><span class="p">;</span><span class="w">       </span><span class="c1">// ❌ error: cannot reassign immutable reference</span>
+
+
+<span class="c1">// use the &#39;mut&#39; keyword to create a mutable variable</span>
+<span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">mutable_ref</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hello&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">mutable_ref</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;goodbye&quot;</span><span class="p">;</span><span class="w">       </span><span class="c1">// ✅ this is fine since it&#39;s mutable</span>
+
+
+<span class="c1">// naming conventions</span>
+<span class="kd">let</span><span class="w"> </span><span class="n">some_ref</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hello&quot;</span><span class="p">;</span><span class="w">    </span><span class="c1">// ✅ Ok: adheres to naming conventions</span>
+<span class="kd">let</span><span class="w"> </span><span class="n">someRef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hello&quot;</span><span class="p">;</span><span class="w">     </span><span class="c1">// ⚠️ warning: should be snake case &#39;some_ref&#39;</span>
+<span class="kd">let</span><span class="w"> </span><span class="n">some_Ref</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hello&quot;</span><span class="p">;</span><span class="w">    </span><span class="c1">// ⚠️ warning: zhould be lowercase &#39;some_ref&#39;</span>
+
+
+<span class="c1">// CONSTANTS</span>
+<span class="c1">// implicitly immutable, must have type annotation, can be declared in any scope</span>
+<span class="kr">const</span><span class="w"> </span><span class="n">THREE_HOURS_IN_SECONDS</span><span class="o">:</span><span class="w"> </span><span class="kt">u32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">  </span><span class="c1">// ✅ Ok</span>
+<span class="kr">const</span><span class="w"> </span><span class="n">TEN_HOURS_IN_SECONDS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">        </span><span class="c1">// ❌ error: must have type eg. i32</span>
+<span class="kr">const</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">TEN_HOURS_IN_SECONDS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">    </span><span class="c1">// ❌ error: cannot be mutable</span>
+<span class="kr">const</span><span class="w"> </span><span class="n">NON_CONSTANT_VALUE</span><span class="o">:</span><span class="w"> </span><span class="kt">i32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="o">::</span><span class="n">random</span><span class="p">();</span><span class="w">   </span><span class="c1">// ❌ error: value must be constant</span>
+<span class="kr">const</span><span class="w"> </span><span class="n">fiveHrsInSecs</span><span class="o">:</span><span class="w"> </span><span class="kt">u32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">    </span><span class="c1">// ⚠️ should be UPPER_SNAKE_CASE</span>
+</pre></div>
+
+<h3 id="associated-functions">Associated functions (<code>::</code>)<a class="headerlink" href="#associated-functions" title="Permanent link"></a></h3>
+<p><a href="https://doc.rust-lang.org/book/ch05-03-method-syntax.html#associated-functions">Associated Functions</a>     <br />
+Also, read these informative <a href="https://www.reddit.com/r/rust/comments/3fimgp/comment/ctqfg33/?utm_source=share&amp;utm_medium=web3x&amp;utm_name=web3xcss&amp;utm_term=1&amp;utm_content=share_button">Reddit</a> post <a href="https://www.reddit.com/r/rust/comments/3fimgp/comment/idc4hlr/?utm_source=share&amp;utm_medium=web3x&amp;utm_name=web3xcss&amp;utm_term=1&amp;utm_content=share_button">comments</a> about <a href="https://www.reddit.com/r/rust/comments/3fimgp/comment/idc5wsy/?utm_source=share&amp;utm_medium=web3x&amp;utm_name=web3xcss&amp;utm_term=1&amp;utm_content=share_button">what :: does</a>.      </p>
+<p>Associated <strong>functions</strong> are basically like static methods in other languages. They do not require an instance of the type to work (which is why they do not have a <code>self</code> parameter). In contrast, <strong>methods</strong> can only be invoked on an instance of a type and they use the dot <code>.</code> operator</p>
+<ul>
+<li><code>::</code> calls functions associated with a type.</li>
+<li><code>.</code> calls methods on a specific instance ie. instance methods.</li>
+</ul>
+<div class="highlight"><pre><span class="c1">// calling associated functions</span>
+<span class="kd">let</span><span class="w"> </span><span class="n">sq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Rectangle</span><span class="o">::</span><span class="n">square</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// associated new() function is like static factory in Java</span>
+<span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">String</span><span class="o">::</span><span class="n">from</span><span class="p">(</span><span class="s">&quot;hello&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// calling methods - these need an instance of a string to work</span>
+<span class="kd">let</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">len</span><span class="p">();</span><span class="w"> </span>
+<span class="kd">let</span><span class="w"> </span><span class="n">trimmed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">trim</span><span class="p">();</span><span class="w"></span>
+</pre></div>
+
+<h3 id="crate-imports-use">Crate imports (<code>use</code>)<a class="headerlink" href="#crate-imports-use" title="Permanent link"></a></h3>
+<p><code>use</code> declarations are used for <em>import</em> and <em>re-export</em> of modules. Another way to describe them when importing is that they create a local name binding for some path, or, more simply, they are used to to shorten the path required to refer to a module item.</p>
+<p>For full reference see <a href="https://doc.rust-lang.org/reference/items/use-declarations.html">Rust Reference: Use</a>.</p>
+<div class="highlight"><pre><span class="c1">// without imports we can refer to functions like so</span>
+<span class="kd">let</span><span class="w"> </span><span class="n">rand</span><span class="o">:</span><span class="w"> </span><span class="kt">i32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="o">::</span><span class="n">random</span><span class="p">();</span><span class="w"></span>
+<span class="kd">let</span><span class="w"> </span><span class="n">my_map</span><span class="o">:</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="kt">i32</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">collections</span><span class="o">::</span><span class="n">hash_map</span><span class="o">::</span><span class="n">HashMap</span><span class="o">::</span><span class="n">new</span><span class="p">();</span><span class="w"></span>
+</pre></div>
+
+<p>With an import we can shorten the paths in our code.</p>
+<div class="highlight"><pre><span class="kn">use</span><span class="w"> </span><span class="n">rand</span><span class="o">::</span><span class="n">random</span><span class="p">;</span><span class="w"></span>
+<span class="kn">use</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">collections</span><span class="o">::</span><span class="n">hash_map</span><span class="o">::</span><span class="n">HashMap</span><span class="p">;</span><span class="w"></span>
+
+<span class="kd">let</span><span class="w"> </span><span class="n">rand</span><span class="o">:</span><span class="w"> </span><span class="kt">i32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">random</span><span class="p">();</span><span class="w"></span>
+<span class="kd">let</span><span class="w"> </span><span class="n">my_map</span><span class="o">:</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="kt">i32</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HashMap</span><span class="o">::</span><span class="n">new</span><span class="p">();</span><span class="w"></span>
+</pre></div>
+
+<h3 id="references">References (<code>&amp;</code>)<a class="headerlink" href="#references" title="Permanent link"></a></h3>
+<p>You can indicate that an argument to a function is a <strong>reference</strong> which allows multiple parts of your code to access the same piece of data without needing to copy that data into memory multiple times. </p>
+<ul>
+<li>References are a relatively complex feature of Rust.</li>
+<li>Like variables, they are immutable by default so if you want a mutable reference then you need to use <code>&amp;mut</code></li>
+</ul>
+<div class="highlight"><pre><span class="n">io</span><span class="o">::</span><span class="n">stdin</span><span class="p">().</span><span class="n">read_line</span><span class="p">(</span><span class="o">&amp;</span><span class="n">guess</span><span class="p">)</span><span class="w">           </span><span class="c1">// immutable reference</span>
+<span class="n">io</span><span class="o">::</span><span class="n">stdin</span><span class="p">().</span><span class="n">read_line</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">guess</span><span class="p">)</span><span class="w">       </span><span class="c1">// mutable reference</span>
+</pre></div>
+
+<h3 id="pattern-matching-to-handle-errors-option-result">Pattern matching to handle errors (<code>Option</code> &amp; <code>Result</code>)<a class="headerlink" href="#pattern-matching-to-handle-errors-option-result" title="Permanent link"></a></h3>
+<p>Operations that can fail will typically return an instance of <a href="https://doc.rust-lang.org/std/result/enum.Result.html">Result</a> or <a href="https://doc.rust-lang.org/std/option/enum.Option.html">Option</a>.</p>
+<div class="highlight"><pre><span class="k">enum</span><span class="w"> </span><span class="nb">Result</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">E</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nb">Ok</span><span class="p">(</span><span class="n">T</span><span class="p">),</span><span class="w">    </span><span class="c1">// Success case with value of type T</span>
+<span class="w">    </span><span class="nb">Err</span><span class="p">(</span><span class="n">E</span><span class="p">),</span><span class="w">   </span><span class="c1">// Error case with error of type E</span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">enum</span><span class="w"> </span><span class="nb">Option</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nb">Some</span><span class="p">(</span><span class="n">T</span><span class="p">),</span><span class="w">    </span><span class="c1">// Contains a value of type T</span>
+<span class="w">    </span><span class="nb">None</span><span class="w">        </span><span class="c1">// Represents absence of a value</span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<p>The key difference between <strong>Option</strong> and <strong>Result</strong> is that Result carries error information in its <strong>Err</strong> variant, while Option just indicates absence with <strong>None</strong>. This makes Result more suitable for operations where you need to know why something failed.</p>
+<p><strong>Example of Option</strong></p>
+<p>The <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.get">get()</a> method on <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#">Vector</a> returns an Option. Instead of indexing an array or vector directly (which might panic), you can use <strong>get()</strong> and then match over the Option returned to check whether there is a value or not.</p>
+<div class="highlight"><pre><span class="k">fn</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">numbers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vec</span><span class="o">!</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="k">match</span><span class="w"> </span><span class="n">numbers</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nb">Some</span><span class="p">(</span><span class="n">number</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;Found number: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">number</span><span class="p">),</span><span class="w"></span>
+<span class="w">        </span><span class="nb">None</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;Index out of bounds!&quot;</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<p><strong>Example of Result</strong></p>
+<p>Here are a couple of example of processing instances of Result.</p>
+<div class="highlight"><pre><span class="k">fn</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// File::open returns Result&lt;File, std::io::Error&gt;</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">file_result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="o">::</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;nonexistent.txt&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Pattern matching approach</span>
+<span class="w">    </span><span class="c1">// In this example we do a further match over the Err to </span>
+<span class="w">    </span><span class="c1">// handle the different error variants</span>
+<span class="w">    </span><span class="k">match</span><span class="w"> </span><span class="n">file_result</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nb">Ok</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;File opened successfully: {:?}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">),</span><span class="w"></span>
+<span class="w">        </span><span class="nb">Err</span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">match</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">kind</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">ErrorKind</span><span class="o">::</span><span class="n">NotFound</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;File not found!&quot;</span><span class="p">),</span><span class="w"></span>
+<span class="w">            </span><span class="n">ErrorKind</span><span class="o">::</span><span class="n">PermissionDenied</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;Permission denied!&quot;</span><span class="p">),</span><span class="w"></span>
+<span class="w">            </span><span class="n">other_error</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;Other error: {:?}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">other_error</span><span class="p">),</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// A more concise way of handling the variants using if let and else</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">file_result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="o">::</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;nonexistent.txt&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="kd">let</span><span class="w"> </span><span class="nb">Ok</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file_result</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;File opened successfully: {:?}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;Failed to open file&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// You can also use the ? operator to propagate errors</span>
+<span class="w">    </span><span class="c1">// In this case, the caller of read_file() would need to manage the Err</span>
+<span class="w">    </span><span class="k">fn</span><span class="w"> </span><span class="n">read_file</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">Result</span><span class="o">&lt;</span><span class="n">File</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">Error</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">File</span><span class="o">::</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;nonexistent.txt&quot;</span><span class="p">)</span><span class="o">?</span><span class="p">;</span><span class="w">  </span><span class="c1">// Returns error if Err</span>
+<span class="w">        </span><span class="nb">Ok</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="handling-panic-program-crashes">Handling Panic (program crashes)<a class="headerlink" href="#handling-panic-program-crashes" title="Permanent link"></a></h3>
+<p>When we say a program &ldquo;panics,&rdquo; it means the program encountered an unrecoverable error and is terminating abruptly rather than trying to handle the error gracefully.</p>
+<p>Common situations that cause panics include:-</p>
+<ul>
+<li>Array/vector access beyond bounds.</li>
+<li>Integer overflow in debug builds.</li>
+<li>Explicitly calling panic!() macro.</li>
+<li>Unwrapping a None value with unwrap().</li>
+<li>Division by zero.</li>
+</ul>
+<p>Rust provides two main ways to handle potential panic situations:-</p>
+<ul>
+<li>Using <code>Result&lt;T, E&gt;</code> for recoverable errors.</li>
+<li>Using <code>Option&lt;T&gt;</code> for values that might be absent.</li>
+</ul>
+<h3 id="shadowing">Shadowing<a class="headerlink" href="#shadowing" title="Permanent link"></a></h3>
+<p><a href="https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html#shadowing">Shadowing</a> is when you reuse a variable name - a feature often used when you want to convert a value from one type to another. </p>
+<div class="highlight"><pre><span class="nb">let </span>mut <span class="nv">guess</span> <span class="o">=</span> String::new<span class="o">()</span><span class="p">;</span>
+
+io::stdin<span class="o">()</span>.read_line<span class="o">(</span><span class="p">&amp;</span>mut guess<span class="o">)</span>.expect<span class="o">(</span><span class="s2">&quot;Failed to read line&quot;</span><span class="o">)</span><span class="p">;</span>
+
+<span class="c1"># trim the original guess string and parse it into an u32 number type</span>
+<span class="nb">let </span>guess: <span class="nv">u32</span> <span class="o">=</span> guess.trim<span class="o">()</span>.parse<span class="o">()</span>.expect<span class="o">(</span><span class="s2">&quot;Please type a number!&quot;</span><span class="o">)</span><span class="p">;</span>
+</pre></div>
+
+<p>What is interesting about shadowing is that we are essentially giving an immutable variable a new value by essentially creating a new variable which replaces the original one. We can apply transformations to a variable (change its value and even its type) but then the variable shall still be immutable once we have finished.</p>
+<p>Shadowing is different from marking a variable as <code>mut</code> because we’ll get a compile-time error if we accidentally try to reassign to this variable without using the <code>let</code> keyword.</p>
+<div class="highlight"><pre><span class="nb">let </span><span class="nv">spaces</span> <span class="o">=</span> <span class="s2">&quot;   &quot;</span><span class="p">;</span>         <span class="c1"># spaces is a string type</span>
+<span class="nb">let </span><span class="nv">spaces</span> <span class="o">=</span> spaces.len<span class="o">()</span><span class="p">;</span>  <span class="c1"># now its a number type</span>
+
+<span class="nb">let </span>mut <span class="nv">spaces</span> <span class="o">=</span> <span class="s2">&quot;   &quot;</span><span class="p">;</span>
+<span class="nv">spaces</span> <span class="o">=</span> spaces.len<span class="o">()</span><span class="p">;</span>      <span class="c1"># compiler error - we tried to change the type</span>
+
+<span class="nb">let </span>mut <span class="nv">spaces</span> <span class="o">=</span> spaces.len<span class="o">()</span><span class="p">;</span>  <span class="c1"># this works though because we used let</span>
+</pre></div>
+
+<p>If we were to try this with a mutable variable without using</p>
+<h3 id="loops">Loops<a class="headerlink" href="#loops" title="Permanent link"></a></h3>
+<p><code>loop</code> will create an infinite loop which will exit either when the program panics (because of some unhandled error), or when encountering a <code>break</code> statement.</p>
+<div class="highlight"><pre>loop <span class="o">{</span>
+
+    println!<span class="o">(</span><span class="s2">&quot;Please input your guess.&quot;</span><span class="o">)</span><span class="p">;</span>
+
+    <span class="nb">let </span>mut <span class="nv">guess</span> <span class="o">=</span> String::new<span class="o">()</span><span class="p">;</span>
+
+    <span class="c1"># wait for user input</span>
+    io::stdin<span class="o">()</span>.read_line<span class="o">(</span><span class="p">&amp;</span>mut guess<span class="o">)</span>.expect<span class="o">(</span><span class="s2">&quot;Failed to read line&quot;</span><span class="o">)</span><span class="p">;</span>
+
+    <span class="c1"># if user inputs a string which cannot be parsed then we loop again</span>
+    <span class="nb">let </span>guess: <span class="nv">u32</span> <span class="o">=</span> match guess.trim<span class="o">()</span>.parse<span class="o">()</span> <span class="o">{</span>
+        Ok<span class="o">(</span>num<span class="o">)</span> <span class="o">=</span>&gt; num,
+        Err<span class="o">(</span>_<span class="o">)</span> <span class="o">=</span>&gt; <span class="k">continue</span>,     <span class="c1"># continue to loop again</span>
+    <span class="o">}</span><span class="p">;</span>
+
+    println!<span class="o">(</span><span class="s2">&quot;You guessed: {guess}&quot;</span><span class="o">)</span><span class="p">;</span>
+
+    match guess.cmp<span class="o">(</span><span class="p">&amp;</span>secret_number<span class="o">)</span> <span class="o">{</span>
+        Ordering::Less <span class="o">=</span>&gt; println!<span class="o">(</span><span class="s2">&quot;Too small!&quot;</span><span class="o">)</span>,
+        Ordering::Greater <span class="o">=</span>&gt; println!<span class="o">(</span><span class="s2">&quot;Too big!&quot;</span><span class="o">)</span>,
+        Ordering::Equal <span class="o">=</span>&gt; <span class="o">{</span>
+            println!<span class="o">(</span><span class="s2">&quot;You win!&quot;</span><span class="o">)</span><span class="p">;</span>
+            <span class="nb">break</span><span class="p">;</span>                   <span class="c1"># break the loop</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<h2 id="notable-types">Notable Types<a class="headerlink" href="#notable-types" title="Permanent link"></a></h2>
+<p>An adhoc list of common types I have come across.</p>
+<h3 id="string"><code>String</code><a class="headerlink" href="#string" title="Permanent link"></a></h3>
+<p><a href="https://doc.rust-lang.org/std/primitive.str.html#method.parse">parse()</a> converts a string slice into any type that implements the <a href="https://doc.rust-lang.org/std/str/trait.FromStr.html">FromStr</a> trait. It will return <code>Err</code> if its not possible to parse into the desired type.</p>
+<p>See <a href="https://www.reddit.com/r/rust/comments/1695k03/string_vs_str/">String vs &amp;str</a>.   <br />
+String <a href="https://gist.github.com/jonjack/76ae94ad83c07ddb1cd2ee286f69e564">ASCII</a>.     </p>
+<h3 id="result"><code>Result</code><a class="headerlink" href="#result" title="Permanent link"></a></h3>
+<p><a href="https://doc.rust-lang.org/std/result/enum.Result.html">Result</a> is a common return type of functions since it represents either a success or failure . Result is an <a href="https://doc.rust-lang.org/book/ch06-00-enums.html">enumeration</a> (or enum) which is a type with a fixed set of states, which are commonly referrd to as <em>variants</em>, and <code>Result</code>&lsquo;s variants are <code>Ok</code> and <code>Err</code>.</p>
+<p><code>Ok</code> variant represents a successful operation and wraps the successfully generated value.      <br />
+<code>Err</code> variant means the operation failed, and Err contains information about how or why the operation failed.</p>
+<h4 id="expect"><code>expect()</code><a class="headerlink" href="#expect" title="Permanent link"></a></h4>
+<p>Result has an <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.expect">expect(</a>) method which you can call:-</p>
+<ul>
+<li>If the instance of Result is an <code>Ok</code> value then expect() will return the value so you can use it.</li>
+<li>If the Result is an <code>Err</code> value then expect() will crash the program and display the message passed to it.</li>
+</ul>
+<p>When a method returns an instance of Result and you do not use that return vale then the progtram will compile but you will get a warning about a potential unhandled <code>Err</code>. To get rid of the warning you can add error handling by either:-</p>
+<ol>
+<li>Calling <code>expect()</code> which will cause the program to panic - this is gnerally discourgaed unless this is what you want the program to do.</li>
+<li>Use pattern matching to handle any potential error gracefully - this is the preferred approach.</li>
+</ol>
+<h3 id="ordering"><code>Ordering</code><a class="headerlink" href="#ordering" title="Permanent link"></a></h3>
+<p><a href="https://doc.rust-lang.org/std/cmp/enum.Ordering.html">Ordering</a> is an enum type that has the variants <code>Less</code>, <code>Greater</code>, and <code>Equal</code>. These are the three outcomes that are possible when you compare two values. The <code>cmp()</code> method compares two values (any two values that can be compared) and returns one of the variants </p>
+<div class="highlight"><pre>use std::cmp::Ordering<span class="p">;</span>
+
+<span class="nb">let </span><span class="nv">adult_age</span> <span class="o">=</span> 18<span class="p">;</span>
+<span class="nb">let </span><span class="nv">her_age</span> <span class="o">=</span> 24<span class="p">;</span>
+match her_age.cmp<span class="o">(</span><span class="p">&amp;</span>adult_age<span class="o">)</span> <span class="o">{</span>
+    Ordering::Less <span class="o">=</span>&gt; println!<span class="o">(</span><span class="s2">&quot;She is a child!&quot;</span><span class="o">)</span>,
+    Ordering::Equal <span class="p">|</span> Ordering::Greater <span class="o">=</span>&gt; println!<span class="o">(</span><span class="s2">&quot;She is an adult&quot;</span><span class="o">)</span>,
+<span class="o">}</span>
+</pre></div>
+
+<h2 id="memory-management-ownership">Memory management (Ownership)<a class="headerlink" href="#memory-management-ownership" title="Permanent link"></a></h2>
+<p><a href="https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html">What Is Ownership?</a></p>
+<p>Rust does not use a garbage collector (Java, Python, Ruby, Javascript) nor does it depend on the programmer to explicitly allocate and release memory (C, C++, Pascal). It uses a set of rules that the compiler checks and if any are violated, the program won’t compile. These rules are the concept of <strong>ownership</strong> whereby every value in Rust is owned, and can only be owned, by a single scope. Once that scope ends the value is dropped from memory. </p>
+<ul>
+<li>Any value whose memory requirements are unknown at compile time, must have memory allocated at <strong>runtime</strong> when we instantiate the data in our code. When a value goes out of scope, Rust calls a <code>drop</code> function which frees up the memory. Custom types can implement drop.</li>
+<li>Any type stored on the stack implements a <code>Copy</code> trait - these values do not move, but rather are trivially copied, making them still valid after assignment to another variable.</li>
+<li>Rust won’t let us annotate a type with Copy if the type, or any of its parts, has implemented the Drop trait.</li>
+</ul>
+<h3 id="variable-scope">Variable Scope<a class="headerlink" href="#variable-scope" title="Permanent link"></a></h3>
+<p>Every variable is owned by a single scope at any one time and it can only be used by that scope. </p>
+<p>A variable can <strong>move</strong> to another scope - it still exists in memory but it can no longer be used by the current scope.    </p>
+<div class="highlight"><pre><span class="k">fn</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">String</span><span class="o">::</span><span class="n">from</span><span class="p">(</span><span class="s">&quot;hello&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;s1 = {s1}&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// 1st print: Ok</span>
+
+<span class="w">    </span><span class="n">some_func</span><span class="p">(</span><span class="n">s1</span><span class="p">);</span><span class="w">  </span><span class="c1">// ownership moved to some_func scope</span>
+<span class="w">    </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;s1 = {s1}&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// 2nd print: compiler error!!</span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">fn</span><span class="w"> </span><span class="n">some_func</span><span class="p">(</span><span class="n">s1</span><span class="o">:</span><span class="w"> </span><span class="n">String</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;some_func() now owns s1: {s1}&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<p>A variable, and its data, will be dropped from memory when its current scope ends.</p>
+<h3 id="reassignment-and-copying">Reassignment and copying<a class="headerlink" href="#reassignment-and-copying" title="Permanent link"></a></h3>
+<p>For anything stored on the stack, when you bind a variable to another variable, the value is simply copied. In the following example, <code>y</code> will have it&rsquo;s own copy of 4.</p>
+<div class="highlight"><pre><span class="c1">// integers are stored on the stack</span>
+<span class="kd">let</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
+<span class="kd">let</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w">   </span><span class="c1">// x&#39;s value is copied and assigned to y</span>
+
+<span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;x = {x}, y = {y}&quot;</span><span class="p">);</span><span class="w">   </span><span class="c1">// prints x = 4, y = 4</span>
+</pre></div>
+
+<p>But for anything stored on the heap, like String, something different happens. In the following example, we could have <code>s1</code> and <code>s2</code> variables (on the stack) both pointing to the same memory address for the &ldquo;hello&rdquo; string on the heap.</p>
+<div class="highlight"><pre><span class="kd">let</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">String</span><span class="o">::</span><span class="n">from</span><span class="p">(</span><span class="s">&quot;hello&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="kd">let</span><span class="w"> </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1</span><span class="p">;</span><span class="w">   </span><span class="c1">// scope of s1 ends here and it is dropped from memory</span>
+
+<span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;{s1}, world!&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// this would cause a compiler error</span>
+</pre></div>
+
+<p>The term <em>shallow copy</em> in programming languages refers to the copying of data on the stack which points to a shared memory address on the heap ie. nothing is copied on the heap. When Rust invalidates <strong>s1</strong> though, it is not really a shallow copy since s1 itself becomes invalid, so what we say instead is that s1 was <strong>moved</strong> to s2. This is how Rust solves the double free up (memory) problem since now it only needs to free the memory when <strong>s2</strong> goes out of scope.</p>
+<p>A <em>deep copy</em> is where data on the heap is copied, which could potentially be an expensive operation. Rust will never automatically create any deep copies.</p>
+<p>If you want to create a deep copy you can use <code>clone()</code> but keep in mind that it can potentially be an expensive operation.</p>
+<div class="highlight"><pre><span class="kd">let</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">String</span><span class="o">::</span><span class="n">from</span><span class="p">(</span><span class="s">&quot;hello&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="kd">let</span><span class="w"> </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1</span><span class="p">.</span><span class="n">clone</span><span class="p">();</span><span class="w">  </span><span class="c1">// s1 is still valid since it gets copied not moved</span>
+
+<span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;{s1}, world!&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// this works because s1 is still valid</span>
+</pre></div>
+
+<h3 id="ownership-functions">Ownership &amp; Functions<a class="headerlink" href="#ownership-functions" title="Permanent link"></a></h3>
+<p>When you reassign a variable it gets moved or copied depending on where its stored. When you pass a variable to a function the same thing happens. </p>
+<ul>
+<li><strong>Heap data</strong> - If you pass a variable, whose data is stored on the heap, to a function, then the function takes ownership and it becomes invalid in its current scope. </li>
+<li><strong>Stack data</strong> - If you pass a variable stored on the stack, to a function, then a copy is passed, and it remains valid in its current scope. </li>
+</ul>
+<h3 id="ownership-function-return-values">Ownership &amp; function return values<a class="headerlink" href="#ownership-function-return-values" title="Permanent link"></a></h3>
+<p>When a function returns a value it goes out of scope and becomes owned by the calling code.</p>
+<h3 id="references-borrowing">References &amp; Borrowing<a class="headerlink" href="#references-borrowing" title="Permanent link"></a></h3>
+<p><a href="https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html#references-and-borrowing">References and Borrowing</a></p>
+<p>Rust has a feature for passing a value to some other scope without relinquishing ownership called <strong>references</strong>. A reference is like a pointer and is guaranteed to always point to </p>
+<p>The <strong>&amp;s1</strong> syntax lets us create a reference that refers to the value of <strong>s1</strong> but does not own it. Because it does not own it, the value it points to will not be dropped when the reference stops being used.</p>
+<p>In the following example, we pass a String <code>s1</code> (stored on the heap) to a <code>length()</code> function, but we pass it prefixed with an ampersand (<code>&amp;</code>) which means it is a reference. Ownership of <code>s1</code> is retained by the <code>main()</code> method and not moved to the callee function (<code>length</code>). </p>
+<div class="highlight"><pre><span class="k">fn</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">String</span><span class="o">::</span><span class="n">from</span><span class="p">(</span><span class="s">&quot;hello&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">length</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">);</span><span class="w">   </span><span class="c1">// &amp; denotes a reference</span>
+<span class="w">    </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;The length of &#39;{s1}&#39; is {len}.&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">// s1 is still valid</span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// Note that the argument uses `&amp;` to indicate that the parameter is a reference.</span>
+<span class="k">fn</span><span class="w"> </span><span class="n">length</span><span class="p">(</span><span class="n">s</span><span class="o">:</span><span class="w"> </span><span class="o">&amp;</span><span class="n">String</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">usize</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">s</span><span class="p">.</span><span class="n">len</span><span class="p">()</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="n">goes</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">scope</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">since</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">owned</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">length</span><span class="p">()</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">dropped</span><span class="w"></span>
+</pre></div>
+
+<p>The <code>&amp;s1</code> syntax lets us create a reference that refers to the value of s1 but does not own it. Because it does not own it, the value it points to will not be dropped when the reference stops being used.</p>
+<p>Note that ownership guarantees that a reference points to a valid value for its limetime.</p>
+<div class="highlight"><pre><span class="k">fn</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">String</span><span class="o">::</span><span class="n">from</span><span class="p">(</span><span class="s">&quot;hello&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">length</span><span class="p">(</span><span class="n">s1</span><span class="p">);</span><span class="w">   </span><span class="c1">// Ok, this is valid move of s1</span>
+
+<span class="w">    </span><span class="c1">// we borrow s1 by creating a reference to it</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">String</span><span class="o">::</span><span class="n">from</span><span class="p">(</span><span class="s">&quot;world&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">s3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">s2</span><span class="p">;</span><span class="w">  </span>
+
+<span class="w">    </span><span class="c1">// we attempt to transfer ownership of s1 to another function</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">length</span><span class="p">(</span><span class="n">s2</span><span class="p">);</span><span class="w">  </span><span class="c1">// compiler error</span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="dereferencing">Dereferencing<a class="headerlink" href="#dereferencing" title="Permanent link"></a></h3>
+<p>The opposite of referencing by using <strong>&amp;</strong> is dereferencing, which is accomplished with the dereference operator, <code>*</code>.</p>
+<h2 id="cargo">Cargo<a class="headerlink" href="#cargo" title="Permanent link"></a></h2>
+<p><a href="https://doc.rust-lang.org/cargo/">Cargo</a> is the Rust package manager - it creates projects, downloads your project&rsquo;s dependencies compiles your packages, uploades your distributions to crates.io etc etc.</p>
+<h3 id="reproducible-builds-with-cargolock">Reproducible builds with Cargo.lock<a class="headerlink" href="#reproducible-builds-with-cargolock" title="Permanent link"></a></h3>
+<p>See <a href="https://doc.rust-lang.org/book/ch02-00-guessing-game-tutorial.html#ensuring-reproducible-builds-with-the-cargolock-file">Ensuring Reproducible Builds with the Cargo.lock File</a></p>
+<p>The Cargo.lock file tracks the versions of all the dependencies your projects uses. It uses the lock file to determine which versions it needs each time your project is compiled, which provides two benefits:-</p>
+<ol>
+<li>Cargo does not have to go and figure out the dependency graph each time it builds youe project (unless you have changed some of the dependency configuration in Cargo.toml between builds).</li>
+<li>Each build will use the same version of dependencies (unless you update the configuration).</li>
+</ol>
+<h3 id="cargo-update">Cargo <code>update</code><a class="headerlink" href="#cargo-update" title="Permanent link"></a></h3>
+<p><a href="https://doc.rust-lang.org/book/ch02-00-guessing-game-tutorial.html#updating-a-crate-to-get-a-new-version">Updating a Crate to Get a New Version</a></p>
+<p>The <code>cargo update</code> command allows you to update versions of dependencies which then updates Cargo.lock.</p>
+<h2 id="general">General<a class="headerlink" href="#general" title="Permanent link"></a></h2>
+<h3 id="binary-library-crates">Binary &amp; library crates<a class="headerlink" href="#binary-library-crates" title="Permanent link"></a></h3>
+<p>There are 2 types of crates:-</p>
+<ol>
+<li><strong>Binary</strong> - these are executable programs.</li>
+<li><strong>Library</strong> - these are non-compiled source code that are intended to be used by other programs and cannot be executed on its own.</li>
+</ol>
+<h3 id="dependency-management">Dependency Management<a class="headerlink" href="#dependency-management" title="Permanent link"></a></h3>
+<p>Any library crates that your crate needs to use need to be specified in Cargo.toml. Cargo understands <a href="https://semver.org/">SemVar</a> version numbers. The following is actually shorthand for <code>^0.8.5</code>, which means any version that is at least 0.8.5 but below 0.9.0.</p>
+<div class="highlight"><pre><span class="o">[</span>dependencies<span class="o">]</span>
+<span class="nv">rand</span> <span class="o">=</span> <span class="s2">&quot;0.8.5&quot;</span>
+</pre></div>
+
+<p>Cargo considers that any version above 0.8.5 but below 0.9.0 should (as per the specification) have a public API that is compatible with version 0.8.5 and therefore you should be able to use any patch release without breaking your code.</p>
+<p>Once you have built your project and <code>rand</code> version <code>0.8.5</code> has been added to Cargo.lock, every build will use version 0.8.5 unless you either specify a different version in Cargo.toml or you use the <strong>update</strong> command.</p>
+<p>When you use <code>cargo update</code>, Cargo will ingore Cargo.lock and check for the most recent patch versions of all the dependencies configured in Cargo.toml. In the case of <code>rand</code> it will look for anything between 0.8.5 - 0.9.0 (not including 0.9.0). If a version 0.8.6 is available then the source for rand will get updated, recompiled, and the version updated in Cargo.lock.</p>
+<h3 id="feature-flags">Feature Flags<a class="headerlink" href="#feature-flags" title="Permanent link"></a></h3>
+<p>Feature flags (or features) are a way to conditionally enable or disable functionality in your crates. This introduces several benefits:-</p>
+<ol>
+<li>When you compile your project, any dependencies are also compiled (Rust dependencies use source-based distribution), and any unrequired features are stripped out of the resulting dependency binary. This means that your resulting binary, which packages it&rsquo;s dependant binaries, has a minimla footprint.</li>
+<li>it also means that compilation is faster when unused features are disabled.</li>
+</ol>
+<p>You can use feature flags in your own code in order to provide any consumers of your code the flexibility to choose the functionality they need.</p>
+<p>Most crates define a <strong>default</strong> feature set which are enabled implicitly.</p>
+<div class="highlight"><pre><span class="c1"># These are equivalent</span>
+<span class="o">[</span>dependencies<span class="o">]</span>
+<span class="nv">serde</span> <span class="o">=</span> <span class="s2">&quot;1.0&quot;</span>
+<span class="nv">serde</span> <span class="o">=</span> <span class="o">{</span> <span class="nv">version</span> <span class="o">=</span> <span class="s2">&quot;1.0&quot;</span>, <span class="nv">features</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;default&quot;</span><span class="o">]</span> <span class="o">}</span>
+
+<span class="c1"># To disable default features:</span>
+<span class="o">[</span>dependencies<span class="o">]</span>
+<span class="nv">serde</span> <span class="o">=</span> <span class="o">{</span> <span class="nv">version</span> <span class="o">=</span> <span class="s2">&quot;1.0&quot;</span>, default-features <span class="o">=</span> <span class="nb">false</span> <span class="o">}</span>
+</pre></div>
+
+<p>You need to enable non-default features.</p>
+<div class="highlight"><pre><span class="o">[</span>dependencies<span class="o">]</span>
+<span class="nv">some_crate</span> <span class="o">=</span> <span class="o">{</span> <span class="nv">version</span> <span class="o">=</span> <span class="s2">&quot;1.0&quot;</span>, <span class="nv">features</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;foo&quot;</span>, <span class="s2">&quot;bar&quot;</span><span class="o">]</span> <span class="o">}</span>
+</pre></div>
+
+<p>You can also enable features at build time without changing your configuration which can be helpful for development/testing. Features enabled this way only apply to the current local build.</p>
+<div class="highlight"><pre>cargo build --features <span class="s2">&quot;foo bar&quot;</span>
+</pre></div>
+
+<h3 id="rust-libraries-crates">Rust libraries (crates)<a class="headerlink" href="#rust-libraries-crates" title="Permanent link"></a></h3>
+<p>Rust calls its libraries &ldquo;crates&rdquo; and there are two forms:-</p>
+<ol>
+<li>Source crate - published on crates.io (package registry, like Maven central or npmjs).</li>
+<li>Binary crate - <code>.rlib</code> (Rust&rsquo;s equivalent of Java&rsquo;s <code>.jar</code>)</li>
+</ol>
+<h3 id="platform-specific-code">Platform specific code<a class="headerlink" href="#platform-specific-code" title="Permanent link"></a></h3>
+<p>The standard library is designed to be platform-agnostic where possible, but some functionality (like file system operations or networking) needs platform-specific implementations. These different versions ensure you get the right implementation for your target platform.</p>
+<div class="highlight"><pre>use std::os::unix::fs::PermissionsExt<span class="p">;</span> // Only available on Unix-like systems
+</pre></div>
+
+<p>Note that it is possible to write platform-specific code that would prevent cross-compilation to certain targets.</p>
+<h2 id="compilation">Compilation<a class="headerlink" href="#compilation" title="Permanent link"></a></h2>
+<ul>
+<li>Rust is an Ahead of Time (AOT) compiled language.</li>
+<li>A unit of compilation in Rust is a crate.</li>
+<li>When you compile a project, all of its dependencies are also compiled because any features (of each dependency) that you have not enabled shall be stripped out of the resulting binary. This is a great optimisation since it means that your resulting binary only contains what it needs and is therefore as small as it can be.</li>
+<li>This is why Rust dependencies use <a href="https://crates.io/">source-based distribution</a> rather than pre-compiled binaries.</li>
+</ul>
+<h3 id="compilation-steps-mir-llvm-il-asm">Compilation Steps (MIR -&gt; LLVM IL -&gt; ASM)<a class="headerlink" href="#compilation-steps-mir-llvm-il-asm" title="Permanent link"></a></h3>
+<p>The compilation process follows these stages with each step adding more low-level details before producing the final artefact which is the executable containing the binary instructions that can be directly loaded into memory and executed by the processor (<em>machine code</em>).</p>
+<p>Rust Source Code → MIR → LLVM IR → ASM → Machine Code. </p>
+<h4 id="mir-mid-level-intermediate-representation">MIR (Mid-level Intermediate Representation)<a class="headerlink" href="#mir-mid-level-intermediate-representation" title="Permanent link"></a></h4>
+<p>MIR is an intermediate representation in the Rust compiler (rustc) that comes after the initial parsing and type checking stages. It&rsquo;s a simplified, lower-level representation of the code that helps with:-</p>
+<ul>
+<li>Can be viewed using <code>rustc -Z print-mir</code></li>
+<li>Performing borrow checking and ownership validation.</li>
+<li>Enabling compiler optimizations.</li>
+</ul>
+<h4 id="llvm-low-level-virtual-machine">LLVM (Low Level Virtual Machine)<a class="headerlink" href="#llvm-low-level-virtual-machine" title="Permanent link"></a></h4>
+<p>LLVM is a compiler infrastructure project which the Rust compiler leverages to transform the MIR to the LLVM Intermediate Representation which:-</p>
+<ul>
+<li>Leverages LLVM&rsquo;s powerful optimization passes.</li>
+<li>Generates machine code for different target architectures.</li>
+<li>It can be viewed with <code>rustc --emit=llvm-ir</code></li>
+</ul>
+<h4 id="asm-assembly">ASM (Assembly)<a class="headerlink" href="#asm-assembly" title="Permanent link"></a></h4>
+<blockquote>
+<p>ASM is just an abbreviation of ASseMbly - it is not an acronym
+Assembly language uses human-readable mnemonics to represent machine code instructions. Each assembly instruction typically corresponds directly to a single machine code instruction for a specific processor architecture.</p>
+</blockquote>
+<ul>
+<li>The LLVM now converts its IR into low-level machine code specific to the particular computer architecture you are compiling for ie. <em>native assembly code</em>.</li>
+<li>This is specific to the target architecture eg. x86_64, ARM etc.</li>
+<li>It is human readable but requires knowledge of the specific CPU architecture&rsquo;s instruction set to be able to understand it.</li>
+<li>It cannot be executed by a processor, it still requires a final step of being converted into machine language.</li>
+<li>You can view it with <code>rustc -s</code>.</li>
+<li>Think of assembly as a recipe written in words which the assembler then translates into the final dish (the executable binary) which can be eaten.</li>
+</ul>
+<h4 id="machine-language-binary">Machine Language (binary)<a class="headerlink" href="#machine-language-binary" title="Permanent link"></a></h4>
+<p>This is the set of binary instructions (for a specific processor architecture) that can be directly loaded into memory and executed.</p>
+<h3 id="rust-compiles-into-platform-specific-libraries">Rust compiles into platform-specific libraries<a class="headerlink" href="#rust-compiles-into-platform-specific-libraries" title="Permanent link"></a></h3>
+<p>Unlike Java (for example), which compiles source code into platform-dependant JARs, Rust compilation generates platform-specific crates. </p>
+<ul>
+<li>When you compile a Rust library for different platforms (targets), you will get an <code>.rlib</code> file for each target platform. This is handled by Rust&rsquo;s cross-compilation system - note that you need appropriate toolchains installed for cross-compilation.</li>
+<li>The Rust&rsquo;s compiler (rustc) will target your current platform&rsquo;s architecture and operating system unless specified otherwise. This default target is called the &ldquo;host&rdquo; target.</li>
+</ul>
+<h3 id="inlining-optimization">Inlining (optimization)<a class="headerlink" href="#inlining-optimization" title="Permanent link"></a></h3>
+<p><a href="https://matklad.github.io/2021/07/09/inline-in-rust.html">Inline In Rust</a></p>
+<p>Inlining is an optimizing transformation that takes place at compile time and which replaces a call to a function with its body during compilation.</p>
+<div class="highlight"><pre>// The following source code gets replaced at compile time 
+fn f(w: u32) -&gt; u32 {
+    inline_me(w, 2)
+}
+fn inline_me(x: u32, y: u32) -&gt; u32 {
+    x * y
+}
+
+// with this
+fn f(w: u32) -&gt; u32 {
+    w * 2
+}
+</pre></div>
+
+<h2 id="organising-code">Organising code<a class="headerlink" href="#organising-code" title="Permanent link"></a></h2>
+<h3 id="preludes-import-groups">Preludes (import groups)<a class="headerlink" href="#preludes-import-groups" title="Permanent link"></a></h3>
+<p>The <a href="https://doc.rust-lang.org/std/prelude/index.html">std::prelude</a> is the set of utilities in the standard library that are automatically imported into every program without you needing to manually import them. This set is kept small and focussed and just includes features that are commonly used across all Rust programs.</p>
+<p>In addition to the standard library prelude, various other libraries have their own preludes eg. <a href="https://doc.rust-lang.org/std/io/prelude/index.html">std::io::prelude</a> includes many common I/O traits so if you are writing some I/O heavy module you may want to just import the io::prelude rather than every part of the io library that you need. All these other preludes have to be manually imported into your modules.</p>
+<h3 id="imports">Imports<a class="headerlink" href="#imports" title="Permanent link"></a></h3>
+<ul>
+<li>Any feature not in the prelude of the standard libary that you want to use in your code has to be explicitly brought into scope with a <code>use</code> statement.</li>
+</ul>
+<h3 id="re-exporting">Re-exporting<a class="headerlink" href="#re-exporting" title="Permanent link"></a></h3>
+<p>Re-exporting allows you to expose internal items through a module&rsquo;s public interface using the <code>pub use</code> syntax and is a useful feature for:-</p>
+<ol>
+<li>Creating a more convenient public API.</li>
+<li>Organizing your code internally while presenting a different structure externally.</li>
+<li>Making deeply nested items available at a higher level</li>
+</ol>
+<div class="highlight"><pre>// In lib.rs
+mod shapes {
+    pub struct Circle {
+        pub radius: f64,
+    }
+}
+
+// Re-export specific items from shapes
+pub use shapes::Circle;
+
+// Now users can do:
+use my_crate::Circle;
+// Instead of:
+use my_crate::shapes::Circle;
+</pre></div>
+
+<p>You can also export items (within your crate) from external crates, so users can import them as though they are importing them from your own crate. This is commonly used in the Rust ecosystem for convenience and is particularly iuseful when:-</p>
+<ul>
+<li>Building a wrapper/facade library</li>
+<li>Creating a unified API that combines multiple dependencies</li>
+<li>Providing convenience exports for commonly used items</li>
+</ul>
+<div class="highlight"><pre>// your_library imports the Serde library and Reqwest
+pub use serde::{Serialize, Deserialize};
+pub use reqwest::Client as HttpClient;
+
+// Now users of your library can do:
+use your_library::Serialize;  // Instead of serde::Serialize
+use your_library::HttpClient; // Instead of reqwest::Client
+</pre></div>
+
+<h3 id="main-function">main() function<a class="headerlink" href="#main-function" title="Permanent link"></a></h3>
+<p>The <code>main</code> function is the entrypoint to a program.</p>
+<h2 id="tools">Tools<a class="headerlink" href="#tools" title="Permanent link"></a></h2>
+<h3 id="evcxr-rust-repl">Evcxr Rust REPL<a class="headerlink" href="#evcxr-rust-repl" title="Permanent link"></a></h3>
+<p><a href="https://github.com/evcxr/evcxr/blob/main/evcxr_repl/README.md">evcxr</a> is a Read-Eval-print loop for Rust.        <br />
+<a href="https://github.com/evcxr/evcxr/blob/main/COMMON.md">evcxr usage guide</a>.</p>
+<p>Before you can use the REPL, you must download a local copy of Rust&rsquo;s source code:</p>
+<div class="highlight"><pre>$ rustup component add rust-src
+</pre></div>
+
+<p>Now you can go ahead and install the binary.</p>
+<div class="highlight"><pre>$ cargo install --locked evcxr_repl
+</pre></div>
+
+<p>And start the REPL.</p>
+<div class="highlight"><pre>$ evcxr  
+Welcome to evcxr. For help, type :help
+&gt;&gt; 
+&gt;&gt; let x = 5;
+&gt;&gt; let y = 10;
+
+&gt;&gt; println!(&quot;x = {x}&quot;)
+x = 5
+
+&gt;&gt; println!(&quot;x + y = {} &amp; x * y = {}&quot;, y + 2, x * y)
+x + y = 12 &amp; x * y = 50
+</pre></div>
+
+<p>Import a crate.</p>
+<div class="highlight"><pre><span class="c1"># import latest version of a crate</span>
+:dep rand  
+
+   Compiling libc v0.2.164
+   Compiling byteorder v1.5.0
+   Compiling getrandom v0.2.15
+   Compiling rand_core v0.6.4
+   Compiling quote v1.0.37
+   Compiling syn v2.0.87
+   Compiling zerocopy v0.7.35
+   Compiling rand_chacha v0.3.1
+   Compiling rand v0.8.5
+
+<span class="c1"># import specific version</span>
+:dep <span class="nv">rand</span> <span class="o">=</span> <span class="o">{</span> <span class="nv">version</span> <span class="o">=</span> <span class="s2">&quot;0.8.5&quot;</span> <span class="o">}</span> 
+</pre></div>
+
+<p>Define a function.</p>
+<div class="highlight"><pre>&gt;&gt; fn guess<span class="o">()</span> -&gt; u8 <span class="o">{</span> 
+    <span class="k">return</span> rand::random<span class="o">()</span><span class="p">;</span>
+<span class="o">}</span>
+
+&gt;&gt; println!<span class="o">(</span><span class="s2">&quot;Random number: {}&quot;</span>, guess<span class="o">())</span>
+Random number: 185
+</pre></div>
+
+<p>Import components with <code>use</code></p>
+<div class="highlight"><pre>use std::cmp::Ordering<span class="p">;</span>
+
+<span class="nb">let </span><span class="nv">adult_age</span> <span class="o">=</span> 18<span class="p">;</span>
+<span class="nb">let </span><span class="nv">her_age</span> <span class="o">=</span> 24<span class="p">;</span>
+
+match her_age.cmp<span class="o">(</span><span class="p">&amp;</span>adult_age<span class="o">)</span> <span class="o">{</span>
+    Ordering::Less <span class="o">=</span>&gt; println!<span class="o">(</span><span class="s2">&quot;She is a child!&quot;</span><span class="o">)</span>,
+    Ordering::Equal <span class="p">|</span> Ordering::Greater <span class="o">=</span>&gt; println!<span class="o">(</span><span class="s2">&quot;She is an adult&quot;</span><span class="o">)</span>,
+<span class="o">}</span>
+</pre></div>
+
+<h2 id="resources">Resources<a class="headerlink" href="#resources" title="Permanent link"></a></h2>
+<p>Some resources I have found a long the way that may be useful.</p>
+<p><a href="https://doc.rust-lang.org/rustdoc/what-is-rustdoc.html">The rustdoc book</a>      <br />
+<a href="https://doc.rust-lang.org/cargo/">The Cargo Book</a>         <br />
+<a href="https://crates.io/">crates.io</a> - the official package registry for Rust.       <br />
+<a href="https://nnethercote.github.io/perf-book/title-page.html">The Rust Performance Book</a> (a set of short notes on performance considerations)      </p>
+<h2 id="appendix-a-stack-heap-refresher">Appendix A - Stack &amp; Heap Refresher<a class="headerlink" href="#appendix-a-stack-heap-refresher" title="Permanent link"></a></h2>
+<p><a href="https://stackoverflow.com/a/47180043/3008323">An interesting SO post</a></p>
+<p>Rust is no different than many other programming languages when it comes to where data is stored - data of a fixed size (at compile time) is on the stack and data whose size cannot be determined (at compile time) will live on the heap. The data on the heap will actually use both the stack and the heap since the pointer address data (to the location on the heap etc) will be on the stack.</p>
+<h4 id="stack">Stack<a class="headerlink" href="#stack" title="Permanent link"></a></h4>
+<ul>
+<li>Anything that has a fixed known size at compile time is stored on the stack - the scalar types (that represent a single value - Integer, Float, Boolean, Char), tuples and arrays (if their elements are of a type that reside on the stack), string literals.</li>
+<li>Data on the <strong>stack</strong> is fast to access since it is written/removed on a LIFO basis. A program pushes data on top of the stack as it works with it and pops it off when it is done with it.  </li>
+<li>When your code calls a function, the values passed into the function (including, potentially, pointers to data on the heap) and the function’s local variables, get pushed onto the stack. When the function is over, those values get popped off the stack.</li>
+</ul>
+<p>Stack memory management is relatively straight-forward, data of a known size are pushed onto the stack and then popped off afterwards when they go out of scope. Since these data are also of a known size, they can be trivially copied (on the stack) if another part of code, in another scope, needs to work with it.</p>
+<h4 id="heap">Heap<a class="headerlink" href="#heap" title="Permanent link"></a></h4>
+<ul>
+<li>Data whose size may change must live on the <strong>heap</strong>.</li>
+<li>When you put data on the heap the allocator finds an area big enough to store that data, marks it as being used, and returns a <strong>pointer</strong> (as address) to the location. This is called <em>allocating on the heap</em> and or just <em>allocating</em> and is more complex than managing data on the stack and therefore is slower.</li>
+<li>Since the pointer is a known fixed size it is stored on the stack. When you want the actual data you must follow the pointer to the address on the heap. </li>
+<li>Contemporary processors are faster if they jump around less in memory ie. they are working with data that is in close proximity to each other on the heap.</li>
+</ul></article></body></html>
