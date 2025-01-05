@@ -8,7 +8,11 @@ A summary of my Rust learnings largely guided by reading the offical Rust guides
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)        
 [The Rust Language Reference](https://doc.rust-lang.org/reference/introduction.html)         
 [Rust by Practise](https://practice.course.rs/)       
-
+[The rustdoc book](https://doc.rust-lang.org/rustdoc/what-is-rustdoc.html)        
+[The Cargo Book](https://doc.rust-lang.org/cargo/)           
+[crates.io](https://crates.io/) - the official package registry for Rust.         
+[The Rust Performance Book](https://nnethercote.github.io/perf-book/title-page.html) (a set of short notes on performance considerations)     
+[Best Practices for Packages with a Binary and a Library](https://doc.rust-lang.org/book/ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html#best-practices-for-packages-with-a-binary-and-a-library)        
 
 
 ```rust
@@ -26,12 +30,13 @@ A summary of my Rust learnings largely guided by reading the offical Rust guides
 <!--TOC-->
 
 
-## TL;DR
+## TL;DR Summary
 
 This section which summarises the most useful aspects of what I think I shall need to keep in mind when writing code. It should evolve with further understanding.
 
 - [Keyword](https://doc.rust-lang.org/book/appendix-01-keywords.html) reference.
 - [Operators & symbols](https://doc.rust-lang.org/book/appendix-02-operators.html) reference.
+- Rust [naming conventions](https://rust-lang.github.io/api-guidelines/naming.html).
 - Use `mut` to create a mutable variable.
 - All variables have an owning scope and only the scope that has ownership can use them. You can however, create a **reference** to the variable (using the `&` prefix) which allows other scopes to borrow the variable without taking ownership.
 - By default, references are immutable (readonly).
@@ -56,7 +61,27 @@ This section which summarises the most useful aspects of what I think I shall ne
     - [Option](https://doc.rust-lang.org/stable/std/option/enum.Option.html) is a very useful enum in Rust and its useful to get to know all its methods.
 - Enums have an advantage over structs in that each variant can store data fields of different types yet the enum variants themselves are all the same type - so you can write a function that takes the enum type and pass any of the variants in, yet they may contain different types of data.
 - Using pattern `match` blocks when handling enums (eg. `Option<T>`) is a very common coding pattern in Rust.
+- The `if let` syntax can be more concise than a regular match when you only need to match one variant.
+- Use modules to organize code to make navigating it more intuitive and to provide a guide for the location of new code.
+- All code within a module is private by default, but you can make it public using the `pub` keyword.
+- If you want to make an item like a function or struct private, you put it in a module.
+- Items in parent modules cannot use private items inside child modules, but items in child modules can use items in the ancestor modules. This is because child modules wrap and hide their implementation details, but the child modules can see the context in which they’re defined.
+- The module tree is just like how you organise files in a directory hierarchy - modules can have child modules and siblings.
+- Modules can contain other modules (children), structs, enums, constants, traits, functions.
+- When the compiler builds your project it starts with the crate root file (`src/main.rs` or `src/lib.rs`) and it builds the module tree. The contents of the crate root files form the root module called `crate`
+- Paths are how you refer to constructs in your code (modules, structs, enums, functions).
+    - Absolute paths begin with either the literal `crate` (when referring to current crate) or the crate name (external crates). These paths are generally preferred as they tend to reduce the cost of updation when moving code around.
+    - Relative paths are just relative to the current code.
+- You can also use `use` keyword to create shortcuts to items within a scope instead of having to keep writing the full path each time you reference it.
+    - When using `use` to bring functions into scope, bring the parent module into scope so that you have to invoke the function on the parent module which makes it clear the function is not locally defined, eg. `some_module::some_function()`
+    - When using `use` on anything other than functions the idiom is to bring the item fully into scope, eg. `some_module::SomeStruct`.
+    - You can resolve name clashes when you import two items with the same name either by just bringing their parent module into scope (like with functions), or create a new name alias using `as` keyword.
+- Structs can be marked public but their fields are still private by default and must be individually marked public as well if you wish to expose them - this is so you can hide implementation details of you wish.
+- If an enum is marked public then all its variants are implicitly public.
+- You can re-export items using `pub use` which makes them available to external code that would otherwise have no access.
 
+
+---
 
 
 ## Programming Concepts
@@ -390,7 +415,31 @@ The Quarter match arm above demonstrates how to bind to values within the match 
 
 Combining match and enums is useful in many situations and is a common pattern in Rust code.
 
-### Pattern Matching on Option<T>
+#### Using special pattern _
+
+A match block's patterns must cover all possibilities - the compiler will catch any failures to exhaust all matches. 
+
+It is possible to handle just a subset of possibilities explicitly and then have a final catchall match arm that catches anything else. You can use a variable if you want to capture state to use in the code or else use the special pattern `_` which just matches on anything but does not bind to any data.
+
+```rust
+// when you want to bind to values in the match 
+let dice_roll = 9;
+
+match dice_roll {
+    3 => add_fancy_hat(),
+    7 => remove_fancy_hat(),
+    other => move_player(other),   // 'other' is a variable which binds to whatever was matched
+}
+
+// when you dont want to bind to any state
+match dice_roll {
+    3 => add_fancy_hat(),
+    7 => remove_fancy_hat(),
+    _ => reroll(),              // _ will catch all other possibilities
+}
+```
+
+#### Pattern Matching on Option<T>
 
 Option has two variants - Some or None - and the common approach to handling an Option is with a match block.
 
@@ -403,8 +452,30 @@ fn plus_one(x: Option<i32>) -> Option<i32> {
 }
 ```
 
+#### If Let
 
-## Structs
+The `if let` syntax lets you combine `if` and `let` into a less verbose way to handle situations where you just want to match one pattern and ignore the rest. 
+
+The following two expressions behave exactly the same.
+
+```rust
+// regular match expression which only executes for a certain match
+match config_max {
+    Some(max) => println!("The maximum is configured to be {max}"),
+    _ => (),      // boilerplate code which is annoying
+}
+
+// using if let is more concise
+if let Some(max) = config_max {
+    println!("The maximum is configured to be {max}");
+}
+```
+
+If you need exhaustive matching then use a regular match, if you only need to match 1 case and want concise code then use `if let` syntax.
+
+You can also incorporate an `else` expression although whether this is more concise than a regular match depends on how complex and verbose your logic is.
+
+### Structs
 
 These are like Java classes. You could also think of them like Tuples, as a way to group values of different types, but the data is stored in fields (key-value pairs) where the key is the field name and the value is the data. 
 
@@ -433,7 +504,7 @@ let user2 = User {
 
 When using Struct Update Syntax (`..`) any fields (in the original instance eg. `user1`) that are stored on the heap will get moved, not copied, to the new object which means those fields in the original object can no longer be used (this effectively makes the original object useless). If you provide values for any fields that would get moved, such as the email String in the above example, then these are not moved from the original object so leaving it still valid.
 
-### Tuple Structs
+#### Tuple Structs
 
 These are just tuples that have a type and are useful in these cases:-
 
@@ -453,7 +524,7 @@ fn main() {
 - You can destucture tuple structs into their individual elements just as with regular tuples.
 - You can also use `.[index]` to access the values.
 
-### Unit Structs
+#### Unit Structs
 
 It is possible to declare structs that do not contain any fields called _unit-like structs_ because they behave similarly to `()`.` They can be useful when you need to implement a trait on some type but don’t have any data that you want to store in the type itself.
 
@@ -461,20 +532,19 @@ It is possible to declare structs that do not contain any fields called _unit-li
 struct AlwaysEqual;
 ```
 
-### Struct data ownership and Lifetimes
+#### Struct data ownership and Lifetimes
 
 You can define structs with fields which are owned types, eg. the String type (which is owned by its scope) rather than the string slice type `&str` which is a reference. When using the String type, each instance of the struct will own all of its data and that data will be valid for as long as the entire struct is valid.
 
 It is also possible to define structs with references such as the string slice, in which case the actual String may be owned by something other than the struct instance. In order to do this you need to use Lifetimes.
 
 
-
-## Functions & Methods
+### Functions & Methods
 
 - Methods are basically functions defined within a struct, enum or trait. They have a first parameter called `self` which represents the instance of the struct they are being called on. They typically work on the data of the struct or enum instance.
 - Functions are similar to methods except they stand alone and are not tied to a specific instance of a struct or enum.
 
-### Functions
+#### Functions
 
 - Rust uses snake case as the conventional style for function and variable names, in which all letters are lowercase and underscores separate words.
 - Function bodies are made up of a series of statements optionally ending in an expression.
@@ -488,7 +558,7 @@ fn five() -> i32 {
 }
 ```
 
-### Associated functions (`::`)
+#### Associated functions (`::`)
 
 An informative [Reddit](https://www.reddit.com/r/rust/comments/3fimgp/comment/ctqfg33/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button) post [comments](https://www.reddit.com/r/rust/comments/3fimgp/comment/idc4hlr/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button) about [what :: does](https://www.reddit.com/r/rust/comments/3fimgp/comment/idc5wsy/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button).   
 
@@ -531,7 +601,7 @@ let length = s.len();
 let trimmed = s.trim();
 ```
 
-### Methods
+#### Methods
 
 The main reason for using methods instead of functions is for organization. You generally put all the things you can do with an instance of a type in methods. You could define the same behaviour in functions outside of the type but by grouping all the type's behaviour within its `impl` block, any users of our code do not need to go searching for these capabilities in various places.
 
@@ -560,8 +630,7 @@ There are 3 options for how the method want to use `self`:-
 Rust has automatic referencing and dereferencing - [read this](https://doc.rust-lang.org/book/ch05-03-method-syntax.html#wheres-the---operator) to understand what this means.
 
 
-
-## Enums
+### Enums
 
 Enums are types in Rust just like struts.
 
@@ -624,7 +693,7 @@ let m = Message::Write(String::from("hello"));
 m.call();
 ```
 
-The `call()`` method uses `&self` to get the value that it was invoked on, in this example a String.
+The `call()` method uses `&self` to get the value that it was invoked on, in this example a String.
 
 An important enum in the standard library is Option which replaces the value null - which Rust does not have and which therefore makes Rust safer. It either has value or it doesn't and is so widely used that it is included in the prelude so you don't ever need to import it.
 
@@ -642,12 +711,11 @@ You have to convert an Option to a T before you can perform T operations with it
 In order to use an `Option<T>` value, you want to have code that will handle each variant - code that only runs when you have a `Some(T)` value and code that only runs when you have a `None value`. The **match** expression is a control flow construct that does just this when used with enums.
 
 
-
-## Notable Types
+### Notable Types
 
 An adhoc list of common types I have come across.
 
-### Unit
+#### Unit
 
 Unit is a tuple without any values. 
 
@@ -655,7 +723,7 @@ Unit is a tuple without any values.
 - Expressions implicitly return the unit value if they don’t return any other value.
 - One practical use of Unit is when we don't care about a generic type, and () makes this explicit. For example, a `Result<(), String>`` can be used as return type for a function that either completes successfully or fails for a variety of reasons.
 
-### Tuple
+#### Tuple
 
 Compound types group multiple values into one type. Rust has two primitive compound types: tuples and arrays.
 
@@ -675,7 +743,7 @@ let (x, y, z) = tup;
 let first_element = tup.0;  // 500
 ```
 
-### Array
+#### Array
 
 Arrays are another way to group multiple elements.
 
@@ -690,14 +758,14 @@ Arrays are useful:-
 - When you want your data allocated on the stack, rather than the heap.
 - When you want to ensure you always have a fixed number of elements ie. you know the number of elements will not need to change eg. you are storing reference data like the months of the year.
 
-### String
+#### String
 
 [parse()](https://doc.rust-lang.org/std/primitive.str.html#method.parse) converts a string slice into any type that implements the [FromStr](https://doc.rust-lang.org/std/str/trait.FromStr.html) trait. It will return `Err` if its not possible to parse into the desired type.
 
 See [String vs &str](https://www.reddit.com/r/rust/comments/1695k03/string_vs_str/).     
 String [ASCII](https://gist.github.com/jonjack/76ae94ad83c07ddb1cd2ee286f69e564).     
 
-### Result
+#### Result
 
 [Result](https://doc.rust-lang.org/std/result/enum.Result.html) is a common return type of functions since it represents either a success or failure . Result is an [enumeration](https://doc.rust-lang.org/book/ch06-00-enums.html) (or enum) which is a type with a fixed set of states, which are commonly referrd to as _variants_, and `Result`'s variants are `Ok` and `Err`.
 
@@ -716,7 +784,7 @@ When a method returns an instance of Result and you do not use that return vale 
 1. Calling `expect()` which will cause the program to panic - this is gnerally discourgaed unless this is what you want the program to do.
 2. Use pattern matching to handle any potential error gracefully - this is the preferred approach.
 
-### Ordering
+#### Ordering
 
 [Ordering](https://doc.rust-lang.org/std/cmp/enum.Ordering.html) is an enum type that has the variants `Less`, `Greater`, and `Equal`. These are the three outcomes that are possible when you compare two values. The `cmp()` method compares two values (any two values that can be compared) and returns one of the variants 
 
@@ -730,6 +798,9 @@ match her_age.cmp(&adult_age) {
     Ordering::Equal | Ordering::Greater => println!("She is an adult"),
 }
 ```
+
+
+---
 
 
 ## Memory management (Ownership)
@@ -934,34 +1005,354 @@ let slice = &a[1..3];
 This slice has the type `&[i32]`. It works the same way as string slices do, by storing a reference to the first element and a length.
 
 
-## Cargo
-
-[Cargo](https://doc.rust-lang.org/cargo/) is the Rust package manager - it creates projects, downloads your project's dependencies compiles your packages, uploades your distributions to crates.io etc etc.
-
-### Reproducible builds with Cargo.lock
-
-See [Ensuring Reproducible Builds with the Cargo.lock File](https://doc.rust-lang.org/book/ch02-00-guessing-game-tutorial.html#ensuring-reproducible-builds-with-the-cargolock-file)
-
-The Cargo.lock file tracks the versions of all the dependencies your projects uses. It uses the lock file to determine which versions it needs each time your project is compiled, which provides two benefits:-
-
-1. Cargo does not have to go and figure out the dependency graph each time it builds youe project (unless you have changed some of the dependency configuration in Cargo.toml between builds).
-2. Each build will use the same version of dependencies (unless you update the configuration).
-
-### Cargo `update`
-
-[Updating a Crate to Get a New Version](https://doc.rust-lang.org/book/ch02-00-guessing-game-tutorial.html#updating-a-crate-to-get-a-new-version)
-
-The `cargo update` command allows you to update versions of dependencies which then updates Cargo.lock.
+---
 
 
-## General
+## Organising Projects
 
-### Binary & library crates
+As a project grows, you should organize code by splitting it into multiple modules and then multiple files. 
+
+Rust has a number of features collectively referred to as the _module system_ that allow you to manage your code’s organization, including which details are exposed, which details are private, and what names are in each scope in your programs.
+
+- **Packages**: A Cargo feature that lets you build, test, and share crates.
+- **Crates**: A tree of modules that produces a library or executable.
+- **Modules** and **use**: Let you control the organization, scope, and privacy of paths.
+- **Paths**: A way of naming an item, such as a struct, function, or module.
+
+### Scope
+
+The nested context in which code is written has a set of names of variables, constants, functions, structs, enums, modules that are deemed "in scope" ie. available for use. The module sytem provides a way to control which names are in scope.
+
+### Encapsulation
+
+The way you write code defines which parts are public for other code to use and which parts are private implementation details that you reserve the right to change. Other code can call your code via its public interface without having to know how the implementation works.
+
+### Crates
+
+A crate is the smallest amount of code that the Rust compiler considers at a time and can be as simple as a single file. Crates can contain modules which may be defined in separate files.
 
 There are 2 types of crates:-
 
-1. **Binary** - these are executable programs.
-2. **Library** - these are non-compiled source code that are intended to be used by other programs and cannot be executed on its own.
+1. **Binary** - programs you can compile to an executable and then run. They must have a function called `main` which is the entrypoint to the program.
+
+2. **Library** - these creates provide code that is intended to be used by other programs. They do not have a `main` function and cannot be run. Since Rust programs can be compiled for a large number of target architectures, library crates are not distributed in binary form but in source code so that they get compiled to the target architecture of each application they are used in. Most of the time when Rustaceans say “crate”, they mean library crate, and they use “crate” interchangeably with the general programming concept of a “library”.
+
+The _crate root_ is a source file that the Rust compiler starts from and makes up the root module of your crate.
+
+### Compilation starts at the crate root
+
+When compiling a crate, the compiler first looks in the crate root file for code to compile.
+
+Crate root is usually:-
+
+- `src/lib.rs` for a library crate.
+- `src/main.rs` for a binary crate.
+
+### Packages
+
+A package is a bundle of one or more crates and a **Cargo.toml** file that describes how to build those crates. 
+
+- A package can contain as many binary crates as you like, but at most only one library crate. 
+- A package must contain at least one crate, whether that’s a library or binary crate.
+
+### Modules
+
+Modules let us organize code within a crate for readability and easy reuse and allow us to control access.
+
+- You define a module with `mod [module_name] { ... }` and its body is within the curly braces.
+- Modules can contain - other modules, structs, enums, constrants, traits, functions.
+- By grouping related code togethor and providing the context with a meaningful name, programmers can navigate the code more intuitively and will have a good idea where to place new code which helps keep the program organized.
+- For details of how to declare modules and submodules see [Modules Cheat Sheet](https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html#modules-cheat-sheet).
+
+#### Module Tree
+
+When the compiler begins to compile your crate it begins with the crate root files _src/main.rs_ (binary crates) and `src/lib.rs` (library crates). They are called the crate root because their contents form a module called `crate` which sits at the root of the crate's module structure, what we call the _module tree_.
+
+This is why module paths start with `crate::[some_module]::[some_sub_module]::...`
+
+#### Privacy
+
+- Modules are Rust's facility for making items private and controlling access to them. 
+- Private items are implementation details that we have decided are internal and should not be available for outside use.
+- If you want to make an item like a function or struct private, you hide it in a module.
+- We can choose to make modules and the items within them public (using `pub mod`), which exposes them to allow external code to use and depend on them.
+- Items in parent modules cannot use items inside child modules if they are private, but items in child modules can use items in the ancestor modules. This is because child modules wrap and hide their implementation details, but the child modules can see the context in which they’re defined.
+
+Note that just by making a module public does not expose its contents it only allows other code to reach the module itself. Since modules are just containers, there is not much point just making a module public. To make a function inside a module accessible (public) we have to do two things:-
+
+- Make the **module** public (`pub mod`) - this allows other code to reach the module.
+- Make the **function** public (`pub fn`) - this allows other coe to reach the function inside the public module.
+
+Consider the following example of code defined in the crate root file. Although `routes` is not public, `run_checks()` can access it since it is defined in the same file so is a sibling. And since `health-route` and `run_checks()` are public they are reachable also.
+
+```rust
+// Library crate root file - src/lib.rs
+
+mod routes {
+    pub mod health_route {
+        pub fn check_health() {}
+    }
+}
+
+pub fn run_checks() {
+
+    // Absolute path
+    crate::routes::health_route::check_health();
+
+    // Relative path
+    routes::health_route::check_health();
+}
+```
+
+#### Making Structs and Enums Public
+
+You can use `pub` with structs and enums but there are a few more details to consider.
+
+- You can mark a struct public but its fields remain private - you have to explicitly mark each field public as well. This is because structs can still be useful if fields are private because you may wish to hide some/all of the implementation details and only expose methods.
+- Public fields can be accessed with dot (`.`) notation.
+- If a struct has just 1 private field then you have to provide a public constructor function (in `impl`) which creates new instances.
+
+```rust
+// Library crate root file - src/lib.rs
+
+mod routes {
+
+    pub struct Route {
+        pub path: String,
+        protocol: String,
+
+    }
+    
+    impl Route {
+        pub fn new_route(name: &str) -> Route {
+            Route {
+                path: String::from(name),
+                protocol: String::from("https://"),
+            }
+        }
+    }
+}
+
+pub fn create_routes() {
+
+    let mut route = routes::Route::new_route("home/")
+    // change the path
+    route.path = String::from("remote/")
+}
+```
+
+**Enums** are simpler than structs because they are not very useful unless their variants are public - so just by marking the enum public, all of the variants are automatically public.
+
+#### Sample module structure
+
+The following is a simple example project structure.
+
+- The compiler starts with the crate root files.
+- You typically declare modules in the create root files.
+- You typically declare submodules in the parent module source file eg. you would declare `mod my_sub_module` in `my_module.rs`
+
+```rust
+my_crate
+    │
+    ├── Cargo.lock
+    ├── Cargo.toml
+    │
+    └── src
+        │
+        ├── lib.rs   // crate root file for library crate
+        ├── main.rs  // crate root file for binary crate
+        │
+        ├── my_module.rs
+        └── my_module
+                │
+                └── my_sub_module.rs
+```
+
+You can put code into the crate root files main.rs and lib.rs if you so wish.     
+Consider that the following two examples have the same result.
+
+```rust
+// src/lib.rs
+mod foo {
+    fn test() {}
+}
+
+//---------------------------
+
+// src/lib.rs
+mod foo;
+
+// src/foo.rs
+fn test() {}
+```
+
+One approach is to configure all your modules in a single place ie. in either **main.rs** or **lib.rs**, for example.
+
+```rust
+// in either main.rs or lib.rs
+mod config;
+mod routes {
+    mod health_route;
+    mod user_route;
+}
+mod models {
+    mod user_model;
+}
+```
+
+### Paths
+
+Once a module is part of a crate, you can refer to code in that module from anywhere else in that same crate, as long as the privacy rules allow, using the path to the code. For example, a `MyType` type in the `my_module my_sub_module` module would be found at `crate::my_module::my_sub_module::MyType`.
+
+Paths have two forms:-
+
+- _Absolute path_ - the full path starting from the crate root.
+    - Paths in the same crate begin with the literal `crate`
+    - Paths in external crates begin with the crate name.
+- _Relative path_ - starts from current module and `self` or `super`, or an identifier.
+
+Path Structure:-
+
+- All paths are followed by some identifier (ie. module, struct, enum, function) separate by double colons (`::`).
+- The `crate` keyword (for current crate) or crate name (external crates) are like saying start at the root of the filesystem (`/`).
+- Choosing which path type to use (if both are valid) is a project choice. If you restructure modules then you may need to update absolute paths, and if you move code between modules then relative paths will need updating. The general preference is to use absolute paths because, assuming you have designed your module structure well and is pretty stable, this allows you to move code definitions around without too much updating (which you may have if you use relative paths).
+- You can of course leverage the `use` keyword to create shortcuts to paths.
+
+```rust
+mod routes {
+    pub mod health_route {
+        pub fn check_health() {}
+    }
+}
+
+pub fn run_checks() {
+
+    // Relative path
+    super::routes::health_route::check_health();
+}
+```
+
+### Relative paths using `super`
+
+You can use the `super` keyword in paths which means the next level up the module tree from the current location, it is like using `..` in a directory path.
+
+### Use keyword
+
+The `use` keyword enables you to write more concise code by creating shortcuts to what would otherwise be long paths that you would have to repreat in your code. You can think of them like symbolic links.
+
+```rust
+use crate::routes::health_route;
+
+pub fn run_checks() {
+    health_route::check_health();
+}
+```
+
+Note that `use` statements only creates a shortcut in the current scope. If `run_checks()` was moved into another scope (inside a `mod host`) then you would either need to move the `use` statement inside the module or reference the `use` shortcut in the parent module with `use super::health_route`.
+
+```rust
+mod host {
+
+    use crate::routes::health_route;
+
+    pub fn run_checks() {
+        health_route::check_health();
+    }
+}
+
+// or
+
+use crate::routes::health_route;
+
+mod host {
+
+    use super::health_route;
+
+    pub fn run_checks() {
+        health_route::check_health();
+    }
+}
+```
+
+### Idiomatic use paths
+
+#### Function paths
+
+We could create a `use` path which creates a shortcut all the way to the function so that we would not need to reference the functions parent module when calling it.
+
+```rust
+use crate::routes::health_route::check_health;
+
+pub fn run_checks() {
+
+    // its not obvious whether this is local or not
+    check_health();
+}
+```
+
+However, it is useful to specify the parent module when invoking the function since this makes it clear the function isn't defined locally. So the idiomatic approach is to create a shortcut just to parent module of a function so that it makes it clear when calling it that it is not local `health_route::check_health()`.
+
+#### Structs, Enum paths
+
+In contrast to functions, when bringing structs, enums and other items into scope with `use` it is more conventional to specify the full path. There is no technical reason for this it has just become the idiomatic approach that has emerged over time.
+
+```rust
+use std::collections::HashMap;
+
+fn main() {
+    let mut map = HashMap::new();
+}
+```
+
+#### Name clashes
+
+If you are bringing two items with the same name but different parent modules into scope, you cannot use the above idiom and you need to either:-
+
+- Reference the parent modules.
+- Modify one or more of the names with the `as` keyword.
+
+### Creating name aliases with the `as` keyword
+
+One way to resolve name clashes, or simply provide a new name which you favour, is to rename an item with the `as` keyword.
+
+```rust
+use std::fmt::Result;
+use std::io::Result as IoResult;   // IoResult does not clash with Result
+
+fn function1() -> Result { ... }
+
+fn function2() -> IoResult<()> { ... }
+```
+
+### Re-exporting Names with `pub use`
+
+Consider the following code. In its current form, any external code would not be able to reach the `check_health()` function because the `routes` module is not public. 
+
+```rust
+// crate's root module - src/lib.rs
+
+mod routes {
+    pub mod health_route {
+        pub fn check_health() {}
+    }
+}
+
+use crate::routes::health_route;
+
+pub fn run_checks() {
+    health_route::check_health();
+}
+```
+
+We could _re-export_ the `health_route` module from the root module by making the `use` statement public using `pub use`.
+
+```rust
+pub use crate::routes::health_route;
+```
+
+Lets say our crate is called **router** any external code would now be able to call `router::health_route::check_health()`.
+
+Re-exporting is useful when the internal structure of your code is different from how programmers calling your code would think about the domain. In other words, using `pub use`, we can write our code with one structure but expose a different structure. This allows us to organise our code in a way in which it makes sense to the programmers working on it, but if this does not quite match how we wish programmers to use it then `pub use` allows us to expose a different view.
 
 ### Dependency Management
 
@@ -1030,83 +1421,6 @@ use std::os::unix::fs::PermissionsExt; // Only available on Unix-like systems
 
 Note that it is possible to write platform-specific code that would prevent cross-compilation to certain targets.
 
-
-## Compilation
-
-- Rust is an Ahead of Time (AOT) compiled language.
-- A unit of compilation in Rust is a crate.
-- When you compile a project, all of its dependencies are also compiled because any features (of each dependency) that you have not enabled shall be stripped out of the resulting binary. This is a great optimisation since it means that your resulting binary only contains what it needs and is therefore as small as it can be.
-- This is why Rust dependencies use [source-based distribution](https://crates.io/) rather than pre-compiled binaries.
-
-### Compilation Steps (MIR -> LLVM IL -> ASM)
-
-The compilation process follows these stages with each step adding more low-level details before producing the final artefact which is the executable containing the binary instructions that can be directly loaded into memory and executed by the processor (_machine code_).
-
-Rust Source Code → MIR → LLVM IR → ASM → Machine Code. 
-
-#### MIR (Mid-level Intermediate Representation)
-
-MIR is an intermediate representation in the Rust compiler (rustc) that comes after the initial parsing and type checking stages. It's a simplified, lower-level representation of the code that helps with:-
-
-- Can be viewed using `rustc -Z print-mir`
-- Performing borrow checking and ownership validation.
-- Enabling compiler optimizations.
-
-#### LLVM (Low Level Virtual Machine)
-
-LLVM is a compiler infrastructure project which the Rust compiler leverages to transform the MIR to the LLVM Intermediate Representation which:-
-
-- Leverages LLVM's powerful optimization passes.
-- Generates machine code for different target architectures.
-- It can be viewed with `rustc --emit=llvm-ir`
-
-#### ASM (Assembly)
-
-> ASM is just an abbreviation of ASseMbly - it is not an acronym
-> Assembly language uses human-readable mnemonics to represent machine code instructions. Each assembly instruction typically corresponds directly to a single machine code instruction for a specific processor architecture.
-
-- The LLVM now converts its IR into low-level machine code specific to the particular computer architecture you are compiling for ie. _native assembly code_.
-- This is specific to the target architecture eg. x86_64, ARM etc.
-- It is human readable but requires knowledge of the specific CPU architecture's instruction set to be able to understand it.
-- It cannot be executed by a processor, it still requires a final step of being converted into machine language.
-- You can view it with `rustc -s`.
-- Think of assembly as a recipe written in words which the assembler then translates into the final dish (the executable binary) which can be eaten.
-
-#### Machine Language (binary)
-
-This is the set of binary instructions (for a specific processor architecture) that can be directly loaded into memory and executed.
-
-### Rust compiles into platform-specific libraries
-
-Unlike Java (for example), which compiles source code into platform-dependant JARs, Rust compilation generates platform-specific crates. 
-
-- When you compile a Rust library for different platforms (targets), you will get an `.rlib` file for each target platform. This is handled by Rust's cross-compilation system - note that you need appropriate toolchains installed for cross-compilation.
-- The Rust's compiler (rustc) will target your current platform's architecture and operating system unless specified otherwise. This default target is called the "host" target.
-
-### Inlining (optimization)
-
-[Inline In Rust](https://matklad.github.io/2021/07/09/inline-in-rust.html)
-
-Inlining is an optimizing transformation that takes place at compile time and which replaces a call to a function with its body during compilation.
-
-```
-// The following source code gets replaced at compile time 
-fn f(w: u32) -> u32 {
-    inline_me(w, 2)
-}
-fn inline_me(x: u32, y: u32) -> u32 {
-    x * y
-}
-
-// with this
-fn f(w: u32) -> u32 {
-    w * 2
-}
-```
-
-
-## Organising code
-
 ### Preludes (import groups)
 
 The [std::prelude](https://doc.rust-lang.org/std/prelude/index.html) is the set of utilities in the standard library that are automatically imported into every program without you needing to manually import them. This set is kept small and focussed and just includes features that are commonly used across all Rust programs.
@@ -1158,12 +1472,63 @@ use your_library::Serialize;  // Instead of serde::Serialize
 use your_library::HttpClient; // Instead of reqwest::Client
 ```
 
-### main() function
+### Workspaces
 
-The `main` function is the entrypoint to a program.
+For very large projects comprising a set of interrelated packages that evolve together, Cargo provides [workspaces](https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html).
 
 
-## Tools
+---
+
+
+## Building Projects
+
+### Cargo
+
+[Cargo](https://doc.rust-lang.org/cargo/) is the Rust package manager - it creates projects, downloads your project's dependencies compiles your packages, uploades your distributions to crates.io etc etc.
+
+### Reproducible builds with Cargo.lock
+
+See [Ensuring Reproducible Builds with the Cargo.lock File](https://doc.rust-lang.org/book/ch02-00-guessing-game-tutorial.html#ensuring-reproducible-builds-with-the-cargolock-file)
+
+The Cargo.lock file tracks the versions of all the dependencies your projects uses. It uses the lock file to determine which versions it needs each time your project is compiled, which provides two benefits:-
+
+1. Cargo does not have to go and figure out the dependency graph each time it builds youe project (unless you have changed some of the dependency configuration in Cargo.toml between builds).
+2. Each build will use the same version of dependencies (unless you update the configuration).
+
+### Cargo `update`
+
+[Updating a Crate to Get a New Version](https://doc.rust-lang.org/book/ch02-00-guessing-game-tutorial.html#updating-a-crate-to-get-a-new-version)
+
+The `cargo update` command allows you to update versions of dependencies which then updates Cargo.lock.
+
+
+---  
+
+
+## Appendix A - Stack & Heap Refresher
+
+[An interesting SO post](https://stackoverflow.com/a/47180043/3008323)
+
+Rust is no different than many other programming languages when it comes to where data is stored - data of a fixed size (at compile time) is on the stack and data whose size cannot be determined (at compile time) will live on the heap. The data on the heap will actually use both the stack and the heap since the pointer address data (to the location on the heap etc) will be on the stack.
+
+#### Stack
+
+- Anything that has a fixed known size at compile time is stored on the stack - the scalar types (that represent a single value - Integer, Float, Boolean, Char), tuples and arrays (if their elements are of a type that reside on the stack), string literals.
+- Data on the **stack** is fast to access since it is written/removed on a LIFO basis. A program pushes data on top of the stack as it works with it and pops it off when it is done with it.  
+- When your code calls a function, the values passed into the function (including, potentially, pointers to data on the heap) and the function’s local variables, get pushed onto the stack. When the function is over, those values get popped off the stack.
+
+Stack memory management is relatively straight-forward, data of a known size are pushed onto the stack and then popped off afterwards when they go out of scope. Since these data are also of a known size, they can be trivially copied (on the stack) if another part of code, in another scope, needs to work with it.
+
+#### Heap
+
+- Data whose size may change must live on the **heap**.
+- When you put data on the heap the allocator finds an area big enough to store that data, marks it as being used, and returns a **pointer** (as address) to the location. This is called _allocating on the heap_ and or just _allocating_ and is more complex than managing data on the stack and therefore is slower.
+- Since the pointer is a known fixed size it is stored on the stack. When you want the actual data you must follow the pointer to the address on the heap. 
+- Contemporary processors are faster if they jump around less in memory ie. they are working with data that is in close proximity to each other on the heap.
+
+
+
+## Appendix B - Tools
 
 ### Evcxr Rust REPL
 
@@ -1244,36 +1609,76 @@ match her_age.cmp(&adult_age) {
 ```
 
 
-## Resources
+## Appendix C - Compilation
 
-Some resources I have found a long the way that may be useful.
+- Rust is an Ahead of Time (AOT) compiled language.
+- A unit of compilation in Rust is a crate.
+- When you compile a project, all of its dependencies are also compiled because any features (of each dependency) that you have not enabled shall be stripped out of the resulting binary. This is a great optimisation since it means that your resulting binary only contains what it needs and is therefore as small as it can be.
+- This is why Rust dependencies use [source-based distribution](https://crates.io/) rather than pre-compiled binaries.
 
-[The rustdoc book](https://doc.rust-lang.org/rustdoc/what-is-rustdoc.html)        
-[The Cargo Book](https://doc.rust-lang.org/cargo/)           
-[crates.io](https://crates.io/) - the official package registry for Rust.         
-[The Rust Performance Book](https://nnethercote.github.io/perf-book/title-page.html) (a set of short notes on performance considerations)      
+### Compilation Steps (MIR -> LLVM IL -> ASM)
 
+The compilation process follows these stages with each step adding more low-level details before producing the final artefact which is the executable containing the binary instructions that can be directly loaded into memory and executed by the processor (_machine code_).
 
-## Appendix A - Stack & Heap Refresher
+Rust Source Code → MIR → LLVM IR → ASM → Machine Code. 
 
-[An interesting SO post](https://stackoverflow.com/a/47180043/3008323)
+#### MIR (Mid-level Intermediate Representation)
 
-Rust is no different than many other programming languages when it comes to where data is stored - data of a fixed size (at compile time) is on the stack and data whose size cannot be determined (at compile time) will live on the heap. The data on the heap will actually use both the stack and the heap since the pointer address data (to the location on the heap etc) will be on the stack.
+MIR is an intermediate representation in the Rust compiler (rustc) that comes after the initial parsing and type checking stages. It's a simplified, lower-level representation of the code that helps with:-
 
-#### Stack
+- Can be viewed using `rustc -Z print-mir`
+- Performing borrow checking and ownership validation.
+- Enabling compiler optimizations.
 
-- Anything that has a fixed known size at compile time is stored on the stack - the scalar types (that represent a single value - Integer, Float, Boolean, Char), tuples and arrays (if their elements are of a type that reside on the stack), string literals.
-- Data on the **stack** is fast to access since it is written/removed on a LIFO basis. A program pushes data on top of the stack as it works with it and pops it off when it is done with it.  
-- When your code calls a function, the values passed into the function (including, potentially, pointers to data on the heap) and the function’s local variables, get pushed onto the stack. When the function is over, those values get popped off the stack.
+#### LLVM (Low Level Virtual Machine)
 
-Stack memory management is relatively straight-forward, data of a known size are pushed onto the stack and then popped off afterwards when they go out of scope. Since these data are also of a known size, they can be trivially copied (on the stack) if another part of code, in another scope, needs to work with it.
+LLVM is a compiler infrastructure project which the Rust compiler leverages to transform the MIR to the LLVM Intermediate Representation which:-
 
-#### Heap
+- Leverages LLVM's powerful optimization passes.
+- Generates machine code for different target architectures.
+- It can be viewed with `rustc --emit=llvm-ir`
 
-- Data whose size may change must live on the **heap**.
-- When you put data on the heap the allocator finds an area big enough to store that data, marks it as being used, and returns a **pointer** (as address) to the location. This is called _allocating on the heap_ and or just _allocating_ and is more complex than managing data on the stack and therefore is slower.
-- Since the pointer is a known fixed size it is stored on the stack. When you want the actual data you must follow the pointer to the address on the heap. 
-- Contemporary processors are faster if they jump around less in memory ie. they are working with data that is in close proximity to each other on the heap.
+#### ASM (Assembly)
 
+> ASM is just an abbreviation of ASseMbly - it is not an acronym
+> Assembly language uses human-readable mnemonics to represent machine code instructions. Each assembly instruction typically corresponds directly to a single machine code instruction for a specific processor architecture.
 
+- The LLVM now converts its IR into low-level machine code specific to the particular computer architecture you are compiling for ie. _native assembly code_.
+- This is specific to the target architecture eg. x86_64, ARM etc.
+- It is human readable but requires knowledge of the specific CPU architecture's instruction set to be able to understand it.
+- It cannot be executed by a processor, it still requires a final step of being converted into machine language.
+- You can view it with `rustc -s`.
+- Think of assembly as a recipe written in words which the assembler then translates into the final dish (the executable binary) which can be eaten.
+
+#### Machine Language (binary)
+
+This is the set of binary instructions (for a specific processor architecture) that can be directly loaded into memory and executed.
+
+### Rust compiles into platform-specific libraries
+
+Unlike Java (for example), which compiles source code into platform-dependant JARs, Rust compilation generates platform-specific crates. 
+
+- When you compile a Rust library for different platforms (targets), you will get an `.rlib` file for each target platform. This is handled by Rust's cross-compilation system - note that you need appropriate toolchains installed for cross-compilation.
+- The Rust's compiler (rustc) will target your current platform's architecture and operating system unless specified otherwise. This default target is called the "host" target.
+
+### Inlining (optimization)
+
+[Inline In Rust](https://matklad.github.io/2021/07/09/inline-in-rust.html)
+
+Inlining is an optimizing transformation that takes place at compile time and which replaces a call to a function with its body during compilation.
+
+```
+// The following source code gets replaced at compile time 
+fn f(w: u32) -> u32 {
+    inline_me(w, 2)
+}
+fn inline_me(x: u32, y: u32) -> u32 {
+    x * y
+}
+
+// with this
+fn f(w: u32) -> u32 {
+    w * 2
+}
+```
 
