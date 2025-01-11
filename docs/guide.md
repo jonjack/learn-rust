@@ -723,6 +723,89 @@ Unit is a tuple without any values.
 - Expressions implicitly return the unit value if they don’t return any other value.
 - One practical use of Unit is when we don't care about a generic type, and () makes this explicit. For example, a `Result<(), String>`` can be used as return type for a function that either completes successfully or fails for a variety of reasons.
 
+#### Array
+
+Arrays are another way to group multiple elements.
+
+> The Vector type, unlike Array, is a collection that is allowed to grow or shrink in size. Unless you need to ensure your collection resides on the stack and has a fixed size, you should use Vector over Array.
+
+- All elements must be of the same type - Rust arrays are homogeneous.
+- The size must be known at compile time.
+- The type must have a known size at compile time.
+
+Arrays are useful:-
+
+- When you want your data allocated on the stack, rather than the heap.
+- When you want to ensure you always have a fixed number of elements ie. you know the number of elements will not need to change eg. you are storing reference data like the months of the year.
+
+```rust
+// some example arrays
+
+// Primitive types
+let numbers: [i32; 5] = [1, 2, 3, 4, 5];
+let booleans: [bool; 3] = [true, false, true];
+
+// Custom struct
+struct Point {
+    x: i32,
+    y: i32,
+}
+
+let points: [Point; 2] = [
+    Point { x: 0, y: 0 },
+    Point { x: 1, y: 1 }
+];
+
+// Enums
+enum Color {
+    Red,
+    Green,
+    Blue,
+}
+
+let colors: [Color; 3] = [Color::Red, Color::Green, Color::Blue];
+```
+
+In Rust, arrays are always stack-allocated by default, including when they contain custom types like structs. The only time that data in an array is stored on the heap is if any of the data is heap-allocated. The following array will be on the stack but will contain pointers to the String data that will reside on the heap.
+
+```rust
+struct Point {
+    x: i32,        // stack-allocated
+    y: i32,        // stack-allocated
+    label: String  // heap-allocated
+}
+
+
+// all the following is on the stack except the Strings.
+let points: [Point; 2] = [
+    Point { x: 0, y: 0, label: String::from("Origin") },
+    Point { x: 1, y: 1, label: String::from("Point 1") }
+];
+```
+
+Note that the array's memory layout and size is still fixed and known at compile time.
+
+```rust
+let arr: [String; 2] = [String::from("hello"), String::from("world")];
+
+// What's on the stack:
+// - The array container itself
+// - Two String structs, each containing:
+//   - A pointer to heap data
+//   - A length
+//   - A capacity
+
+// What's on the heap:
+// - The actual string data "hello"
+// - The actual string data "world"
+```
+
+Each of the above Strings stored on the stack contain the following three components - which are collectively known as the _"fat pointer"_:-
+
+1. A pointer to heap memory (where the actual characters are stored).
+2. A length field.
+3. A capacity field.
+
 #### Tuple
 
 Compound types group multiple values into one type. Rust has two primitive compound types: tuples and arrays.
@@ -743,27 +826,33 @@ let (x, y, z) = tup;
 let first_element = tup.0;  // 500
 ```
 
-#### Array
+The memory storage behaviour of tuples follows the same principles as arrays. The tuples themselves are stored on the stack, but if they contain types that use heap allocation, those values will be stored on the heap and a "fat pointer" to each heap-allocated value is stored in the tuple.
 
-Arrays are another way to group multiple elements.
+```rust
+// All stack-allocated - everything stored on stack
+let tuple1: (i32, bool, char) = (42, true, 'a');
 
-> The Vector type, unlike Array, is a collection that is allowed to grow or shrink in size. Unless you need to ensure your collection resides on the stack and has a fixed size, you should use Vector over Array.
+// Mixed storage
+let tuple2: (String, i32, String) = (
+    String::from("hello"),  // String data on heap
+    42,                     // i32 on stack
+    String::from("world")   // String data on heap
+);
 
-- Unlike tuples every element of an array must have the same type.
-- Arrays in Rust have a fixed length.
-- You create them using square brackets `let arr = [1, 2, 3, 4, 5]`
+// Example with custom types
+struct Point {
+    x: i32,
+    y: i32
+}
 
-Arrays are useful:-
+// All stack-allocated since Point has no heap data
+let tuple3: (Point, i32) = (Point { x: 1, y: 2 }, 42);
 
-- When you want your data allocated on the stack, rather than the heap.
-- When you want to ensure you always have a fixed number of elements ie. you know the number of elements will not need to change eg. you are storing reference data like the months of the year.
-
-#### String
-
-[parse()](https://doc.rust-lang.org/std/primitive.str.html#method.parse) converts a string slice into any type that implements the [FromStr](https://doc.rust-lang.org/std/str/trait.FromStr.html) trait. It will return `Err` if its not possible to parse into the desired type.
-
-See [String vs &str](https://www.reddit.com/r/rust/comments/1695k03/string_vs_str/).     
-String [ASCII](https://gist.github.com/jonjack/76ae94ad83c07ddb1cd2ee286f69e564).     
+// Tuple containing Vec (heap-allocated collection)
+let tuple4: (Vec<i32>, bool) = (vec![1, 2, 3], true);
+// - Tuple and Vec struct (pointer, length, capacity) on stack
+// - Actual vector contents on heap
+```
 
 #### Result
 
@@ -800,12 +889,410 @@ match her_age.cmp(&adult_age) {
 ```
 
 
+## Common Collections
+
+Arrays and Tuples are collections that are stored on the stack and their memory requirements must be known at compile time. There are other collection types which are stored on the heap and which can grow or shrink dynamically at runtime.
+
+### String
+
+[Guide to Working with Strings in Rust](https://dev.to/alexmercedcoder/in-depth-guide-to-working-with-strings-in-rust-1522)      
+See [String vs &str](https://www.reddit.com/r/rust/comments/1695k03/string_vs_str/)     
+String [ASCII](https://gist.github.com/jonjack/76ae94ad83c07ddb1cd2ee286f69e564)     
+
+Not usually considered a collection but a string is actually a collection of UTF8-encoded character bytes, and they are a more complicated data structure than many programmers appreciate.
+
+Different languages make different choices for handling strings. Rust has chosen to treat all strings as UTF-8 which means programmers have to put more thought into handling UTF-8 data up front. This trade-off exposes more of the complexity of strings than is not apparent in other programming languages, but it prevents you from having to handle errors involving non-ASCII characters later in your development life cycle.
+
+#### There are two string types in Rust
+
+1. The string slice `str` which is part of the core language. They are immutable with a fied length so once created they cannot change. It is only really useful in its borrowed form `&str`. See [String Slice](#) section below.
+2. The `String` type which is part of the standard library (not core language) and is a growable, mutable, owned, UTF-8 encoded string type.
+    - They are actually implemented as a wrapper around a vector of bytes with some extra guarantees, restrictions, and capabilities. So many of the operations of `String` are also available with vector (`Vec[T]`).
+    
+#### How Strings are stored
+
+[Internal Representation](https://doc.rust-lang.org/stable/book/ch08-02-strings.html#internal-representation)
+
+String is a wrapper over [Vec](https://doc.rust-lang.org/std/vec/struct.Vec.html)<[u8](https://doc.rust-lang.org/std/primitive.u8.html)\>.
+
+Consider the following examples of valid UTF-8 strings. The first string only takes 4 bytes to encode it in UTF-8 whilst the second string takes 24 bytes - the reason for the difference comes down to understanding [UTF-8 character encoding](https://blog.hubspot.com/website/what-is-utf-8). Each Unicode scalar value in the second string takes 2 bytes of storage.
+
+```rust
+let hello = String::from("Hola");           // 4 bytes long
+let hello = String::from("Здравствуйте");   // 24 bytes long
+```
+
+#### Bytes and Scalar Values and Grapheme Clusters
+
+Another thing to consider is that there are three relevant ways to look at strings from Rust’s perspective: as bytes, scalar values, and grapheme clusters (the closest thing to what we would call letters).
+
+[See more details here](https://doc.rust-lang.org/stable/book/ch08-02-strings.html#bytes-and-scalar-values-and-grapheme-clusters-oh-my)
+
+Rust provides different ways of interpreting the raw string data that computers store so that each program can choose the interpretation it needs, no matter what human language the data is in.
+
+Note that getting grapheme clusters from strings is complex and not covered by the standard library so you have to use supporting crates.
+
+#### Indexing
+
+Rust does not support indexing (eg. `some_string[0]`) on strings like some other languages for a couple of reasons. Strings in Rust are always UTF-8 encoded (see [How Strings are stored](https://null)) and Indexes usually correlate to a byte of storage. This UTF-8 string `Здравствуйте` (for example) takes 24 bytes to store it (2 bytes per character) so an index into this string's bytes will not always correlate to a character.
+
+Consider also that Rust provides different ways of interpreting string data (Bytes, Scalar Values, Grapheme Clusters) so indexing will also not necessarily make sense depending on how you are working with the data.
+
+Also, indexing operations are expected to always take constant time (O(1)). But it isn’t possible to guarantee that performance with a String, because Rust would have to walk through the contents from the beginning to the index to determine how many valid characters there were.
+
+To remove the risk of returning unexpected values, the Rust compiler will fail any code which attempts to index into a string.
+
+#### Warning about String Slices
+
+Even though indexing into strings is not supported in Rust, you do use a range of indexes when creating a string slice - which map to bytes not characters. In the following string slice example, `s` will be equal to `Зд` because four bytes in this string maps to only two characters (first character is actually capital Cyrillic letter Ze not 3).
+
+```rust
+let hello = "Здравствуйте";
+let s = &hello[0..4];
+```
+
+This is important to remember because the compiler will not stop you if you slice only part of a character’s bytes and this can crash your program, eg. something like `&hello[0..1]` would cause Rust to panic at runtime in the same way as if an invalid index were accessed in a vector.
+    
+#### Creating strings
+
+```rust
+// create a new empty String
+let mut s = String::new();
+
+// create a String with some data
+// the following 3 approaches are all equivalent
+let contents = "Some contents";
+let s = data.to_string();
+
+let s = "Some contents".to_string();
+
+let s = String::from("Some contents");
+```
+
+They are UTF-8 encoded so you can use any properly encoded data:-
+
+```rust
+let hello = String::from("Hello");
+let hello = String::from("こんにちは");
+let hello = String::from("Здравствуйте");
+```
+
+#### Modifying strings
+
+```rust
+// append a string to an existing string with 'push_str'
+let mut s = String::from("foo");
+s.push_str("bar");
+
+// append a single character with 'push'
+s.push('l');
+```
+
+#### Concatenation
+
+[Concatenation with + Operator or format! Macro](https://doc.rust-lang.org/book/ch08-02-strings.html#concatenation-with-the--operator-or-the-format-macro)
+
+The `+` operator uses the `add(self, s: &str) -> String` method behind the scenes which is invoked on an owned string but takes a string reference (slice) as an argument. So the first string gets moved, and the second string does not as it is a reference. We are able to pass an instance of the `String` type to the method which takes a reference `&str` because the compiler is able to coerce it using a _deref coercion_.
+
+```rust
+// + operator
+let s1 = String::from("Tic, ");
+let s2 = String::from("Tac");
+
+let s = s1 + &s2; // note s1 has been moved here and can no longer be used
+```
+
+You can use `+` to join multiple strings but it gets a bit messy to read so you can use the `format!` macro instead which works like `println!`, but instead of printing the output to the screen, it returns a String with the contents.
+
+```rust
+let s3 = String::from("Toe");
+
+// using + for multiple strings gets a bit messy
+let s = s1 + "-" + &s2 + "-" + &s3;
+
+// format! macro
+let s = format!("{s1}-{s2}-{s3}");
+```
+
+#### Iterating over Strings
+
+The safest approach for operating on strings is to be explicit about whether you want characters or bytes.
+
+```rust
+// use chars method if you want characters
+for c in "Зд".chars() {    
+    println!("{c}");
+}   
+
+// will print chars 
+Зд
+
+// if you need bytes use bytes method
+for b in "Зд".bytes() {    
+    println!("{b}");
+}
+
+// will print
+208
+151
+208
+180
+```
+
+### Vectors
+
+The [vector](https://doc.rust-lang.org/std/vec/struct.Vec.html) is a generic collection with type `Vec` and has the following characteristics:-
+
+- You can store multiple values of any type but only of the same type.
+- All values will be stored next to each other in memory ie. contiguous.
+- When a vector goes out of scope it is dropped and so are all its elements.
+    
+
+They are useful when you have lists of items such as lines of text in a file or items in a shopping cart.
+
+```rust
+// Creating vectors
+
+// type <i32> annotated because it is empty so we tell Rust what we intend to store 
+let v: Vec<i32> = Vec::new();
+
+// Rust can infer the type if you create it with data
+// the vec! macro is useful for creating vectors with initial values
+// this will have type <i32> as that is default integer type
+let v = vec![1, 2, 3];
+```
+
+They can be mutable and can be updated using the `push` method.
+
+```rust
+// Updating vectors
+
+// we need to use mut if we want to update it
+let mut v = Vec::new();
+
+// update using the push method
+v.push(5);
+v.push(6);
+```
+
+There are two ways of referencing a value stored in a vector - by indexing or using the `get` method.
+
+```rust
+// Referening items in vectors
+
+let v = vec![1, 2, 3, 4, 5];
+
+// vector indexes start at zero
+// & gives us a reference to the element
+let third: &i32 = &v[2];
+
+println!("The third element is {third}");
+
+// get method gives us an option containing a reference
+let third: Option<&i32> = v.get(2);
+
+match third {    
+    Some(third) => println!("The third element is {third}"),
+    None => println!("There is no third element."),
+}
+```
+
+Which method you use depends on how you want your program to behave if it references a non-existent element.
+
+- Use an index if you want your program to crash when accessing an out of bounds index. 
+- Use `get` if accessing an element beyond the range of the vector may happen occasionally under normal circumstances eg. the index is driven by manual input - in which case you will have logic to handle the `None` case.
+
+```rust
+// Panicking
+
+let v = vec![1, 2, 3, 4, 5];
+
+// this will panic
+let does_not_exist = &v[100];
+
+// this does not panic - it returns a None
+let does_not_exist = v.get(100);
+```
+
+#### Vectors and Ownership
+
+Note that the borrow checker enforces the ownership and borrowing rules to ensure that any references to the contents of the vector remain valid. Recall the rule that states you can’t have mutable and immutable references in the same scope.
+
+The following will not compile.
+
+```rust
+// Ownership
+
+let mut v = vec![1, 2, 3, 4, 5];
+
+let first = &v[0];  // & reference is an immutable borrow 
+
+v.push(6);   // an update is a mutable borrow
+
+println!("The first element is: {first}");  // reference to first borrow
+```
+
+Why should the reference to the `first` reference care about changes to the end of the vector caused by the `push`?
+
+Since vector elements are stored in blocks of contiguous memory, an update might require the allocation of a new memory block somewhere else and the copying of the old elements to the new space. In such an event the reference to the first element would be pointing to deallocated memory. The borrowing rules guard against creating this situation.
+
+When a vector gets dropped (when it goes out of scope) all its contents are also dropped. The borrow checker ensures that any references to the contents of a vector are only used while the vector itself is valid.
+
+#### Iterating over vectors
+
+The for loop gets immutable references to each element in a `Vec`.
+
+```rust
+// Iterating
+
+let v = vec![100, 32, 57];
+
+for i in &v {    
+    println!("{i}");
+}
+```
+
+If we want to make changes to elements in a mutable vector we need to get a mutable reference to each one and then use the `\\*` dereference operator to get to the value in `i` before we can use the `+=` operator.
+
+```rust
+// Iterating & updating
+
+let mut v = vec![100, 32, 57];
+
+for i in &mut v {    
+    *i += 50;
+}
+```
+
+Iterating over a vector, whether immutably or mutably, is safe because of the borrow checker’s rules. If we attempted to insert or remove items in the for loops then this would not compile since the reference that the `for` loop holds prevents simultaneous modification of the whole vector.
+
+#### Using Enum to store multiple values
+
+Vectors can only hold values of the same type and this can be inconvenient in some situations. As a workaround you can store enum variants which can be of different types since as far as the vector is concerned it is just storing the same enum type.
+
+[See the book for an example](https://doc.rust-lang.org/stable/book/ch08-01-vectors.html#using-an-enum-to-store-multiple-types)
+
+
+### Hash Maps
+
+The hash map type `HashMap` stores a mapping of keys of type `K` to values of type `V` using a hashing function, which determines how it distributes these keys and values in memory.
+
+They are useful when you want to store and then look up a value based on its key that you control, rather than an index. There are many functions defined on [HashMap](https://doc.rust-lang.org/std/collections/struct.HashMap.html) for use in varying situations.
+
+- Like Strings and Vectors they are stored on the heap.
+- Like vectors, they are homogeneous - so all the keys must be of the same type and all the values must be of the same type. The key and value can be different types however.
+    
+Since HashMap is not used as commonly as String and Vector it is not brought into scope automatically in the prelude and so we have to `use` is from the collections part of the standard library.
+
+```rust
+use std::collections::HashMap;
+
+// create a hashmap using new and insert elements
+let mut scores = HashMap::new();
+scores.insert(String::from("Blue"), 10);
+scores.insert(String::from("Green"), 20);
+```
+
+You retrieve values using the `get` method which takes a key.
+
+The get method returns an `Option<&V>`. In the following example we use `copied` to get an `Option` rather than an `Option<&i32>` and then `unwrap_or` to set score to zero if the Option is a `None`.
+
+```rust
+// Get method
+
+let team_name = String::from("Blue");
+let score = scores.get(&team_name).copied().unwrap_or(0);
+```
+
+You can iterate over each key-value with a for loop.
+
+```rust
+// Iterating
+
+for (key, value) in &scores {
+    println!("{key}: {value}");
+}
+```
+
+#### HashMaps and ownership
+
+When you add items to a hash map the ownership rules apply:-
+
+- For anything that is stored on the stack (implements `Copy`) trait, like `i32`, the value gets copied into the hash map.
+- For anything that is owned (stored on the heap), like `String`, the values will be moved and the hash map becomes the owner.
+
+```rust
+let field_name = String::from("Hello");
+let field_value = String::from("World");
+
+let mut map = HashMap::new();
+map.insert(field_name, field_value);
+// field_name and field_value can no longer be accessed
+```
+
+You can insert references to values into the hash map and the values shall not be moved. The compiler shall enforce that the values the references point to are valid for as long as the hash map is.
+
+#### Updating a Hash Map
+
+Each key is unique so you have to decide how to handle the case whereby a key already exists and refers to some value. You can replace the old value, only update if the key does not have a value, or combine the two values.
+
+```rust
+// Updating an existing key/value
+
+use std::collections::HashMap;
+
+let mut scores = HashMap::new();
+
+// overwriting 
+scores.insert(String::from("Blue"), 10);
+scores.insert(String::from("Blue"), 25);
+
+println!("{scores:?}");
+```
+
+To update the key with a value only if it has no current value there is a special API called `entry` which returns an enum of type `Entry` which may or may not have a value. The `Enum.or_insert()` method returns a mutable reference to the value for the corresponding Entry key if that key exists, and if not, it inserts the argument as the new value. 
+
+Using `entry` is much neater than writing the logic ourselves.
+
+```rust
+scores.insert(String::from("Blue"), 10);
+
+scores.entry(String::from("Yellow")).or_insert(50);
+scores.entry(String::from("Blue")).or_insert(50);
+```
+
+A common use case is to update a value based on the current value eg. we are keeping scores or keeping track of something. In the following example we keep count of how many times each word appears in a sentence. We check if each word already exists in the map or not, increment its count if its already there.
+
+- `split_whitespace()` method returns an iterator over subslices, separated by whitespace, of the value in text.
+- `or_insert` returns a mutable reference (`&mut V`) to the value for the specified key which is then stored in the `count` variable.
+- In order to assign to that value, we must first dereference `count` using `*`.
+
+
+```rust
+let text = "hello world wonderful world";
+
+let mut map = HashMap::new();
+
+for word in text.split_whitespace() {
+    let count = map.entry(word).or_insert(0);  // if no word insert zero
+    *count += 1;   // now increment by 1
+}
+```
+
+Note that iteration of a hash map happens in an arbitrary order.
+
+#### The hashing function
+
+The default hashing function is called _SipHash_ which provides resistance to denial-of-service (DoS) attacks involving hash tables. If you profile your code and find that the default hash function is too slow for your purposes, you can switch to another function by specifying a different _hasher_.
+
+
 ---
 
 
 ## Memory management (Ownership)
 
-[What Is Ownership?](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)
+[What Is Ownership?](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)       
+[Memory Allocations in Rust](https://dev.to/gritmax/memory-allocations-in-rust-3m7l)      
 
 Rust does not use a garbage collector (Java, Python, Ruby, Javascript) nor does it depend on the programmer to explicitly allocate and release memory (C, C++, Pascal). It uses a set of rules that the compiler checks and if any are violated, the program won’t compile. These rules are the concept of **ownership** whereby every value in Rust is owned, and can only be owned, by a single scope. Once that scope ends the value is dropped from memory. 
 
@@ -944,9 +1431,9 @@ fn change(s: &mut String) { // the parameter type must be &mut
 
 ### Slice Type
 
-[The Slice Type](https://doc.rust-lang.org/stable/book/ch04-03-slices.html#the-slice-type) allows you to reference to a contiguous sequence of elements in a collection rather than the collection as a whole.
+[The Slice Type](https://doc.rust-lang.org/stable/book/ch04-03-slices.html#the-slice-type) allows you to reference a partial (contiguous) section of a collection rather than the collection as a whole.
 
-- It can be used with different types of collections but is commonly used with strings to refer to a substring ie. the string slice.
+- It can be used with different types of collections but is commonly used with strings to refer to a substring (the string slice type `str`).
 - A slice is a kind of reference so it never has ownership.
 - A slice can refer to the whole string/collection - it does not have to refer to just a part.
 - A slice stores a reference to its first element and a length.
@@ -976,11 +1463,46 @@ let slice= &s[..];
 
 #### String slice (`&str`)
 
-String literals (because their memory requirements are know at compile time) are stored within the binary. The type of string literals are a string slice `&str` which are a reference to that particular part of the binary. `&str` is an immutable reference so string literals must be immutable.
+They are an immutable reference to a sequence of UTF-8 characters. 
+
+- Use when you want to pass a reference to an existing string without taking ownership.
+- Use when you do not need to modify the data - they are immutable and have a fixed length. 
+- String literals are inherently of type `&str`.
+
+**String slices contain two components:-**
+
+1. A pointer to some text in memory.
+2. The length of the slice.
+
+The slice struct itself (the pointer and length) is stored on the stack, but the actual string data that it refers to is stored elsewhere - typically in one of these locations:
+
+- For string literals (like `let s = "hello"``), the actual text is stored in the program's read-only memory segment.
+- For slices of `String`s, the text data is stored on the heap
+- For slices of other string slices, it points to wherever the original data is stored
 
 ```rust
-let s = "Hello, world!";    // string literals are implicitly the &str slice type
+let text = "hello"; // The string slice struct is on the stack,
+                    // but "hello" is in read-only memory of the binary
+
+let owned = String::from("world"); // "world" is on the heap
+let slice = &owned[..]; // slice struct on stack, still points to heap data
 ```
+
+**They are immutable**
+
+Once created, you cannot modify either the content or the length of a string slice. This is part of Rust's memory safety guarantees.
+
+```rust
+let s = String::from("hello world");
+let slice = &s[0..5]; // Creates a slice containing "hello"
+
+// You cannot do any of these:
+// slice.push('a');     // Won't compile - no method to modify contents
+// slice.extend("...");  // Won't compile - slice is immutable
+// slice = &s[0..7];    // Won't compile - if slice is not declared as mut
+```
+
+If you need a modifiable string, you should use a `String` type instead. You can always create a new string slice with a different length by re-slicing either a `String` or another string slice, but the original slice itself cannot be changed.
 
 #### String Slices as Parameters
 
@@ -1200,6 +1722,39 @@ mod models {
 }
 ```
 
+#### Separating Modules into different files
+
+[Separating Modules into Different Files](https://doc.rust-lang.org/book/ch07-05-separating-modules-into-different-files.html)
+
+You could theoretically put all modules and code into the crate root file (main.rs or lib.rs) but this would get a bit large for anything but the trivial application.
+
+Wherever you declare a module, its location in terms of the filesystem is relative to that. The following is an example of where code must be placed in files depending on where the modules are defined.
+
+```rust
+// src/main.rs or src/lib.rs 
+mod routes;
+
+pub use crate::routes::health_route; 
+
+pub fn run_checks() {
+    health_route::check_health();
+}
+
+// src/routes.rs
+pub mod health_route;
+
+// src/routes/health_route.rs
+pub fn check_health() {}
+```
+
+There is an older but still supported style of file path whereby the compiler will check for a file at location `[some_module]/mod.rs`, as shown below. You can use a mix of styles but this is not encouraged and the older style (`mod.rs`) is not good as it leads to a proliferation of mod.rs files in large projects so don't use it.
+
+```rust
+src/routes.rs         // most common idiomatic style
+src/routes/mod.rs     // older less preferred style
+```
+
+
 ### Paths
 
 Once a module is part of a crate, you can refer to code in that module from anywhere else in that same crate, as long as the privacy rules allow, using the path to the code. For example, a `MyType` type in the `my_module my_sub_module` module would be found at `crate::my_module::my_sub_module::MyType`.
@@ -1232,11 +1787,14 @@ pub fn run_checks() {
 }
 ```
 
-### Relative paths using `super`
+#### Relative paths using `super`
 
 You can use the `super` keyword in paths which means the next level up the module tree from the current location, it is like using `..` in a directory path.
 
-### Use keyword
+
+### Bringing Paths into scope (imports)
+
+#### The Use Keyword
 
 The `use` keyword enables you to write more concise code by creating shortcuts to what would otherwise be long paths that you would have to repreat in your code. You can think of them like symbolic links.
 
@@ -1274,9 +1832,7 @@ mod host {
 }
 ```
 
-### Idiomatic use paths
-
-#### Function paths
+#### Idiomatic Function paths
 
 We could create a `use` path which creates a shortcut all the way to the function so that we would not need to reference the functions parent module when calling it.
 
@@ -1292,7 +1848,7 @@ pub fn run_checks() {
 
 However, it is useful to specify the parent module when invoking the function since this makes it clear the function isn't defined locally. So the idiomatic approach is to create a shortcut just to parent module of a function so that it makes it clear when calling it that it is not local `health_route::check_health()`.
 
-#### Structs, Enum paths
+#### Idiomatic Structs & Enum paths
 
 In contrast to functions, when bringing structs, enums and other items into scope with `use` it is more conventional to specify the full path. There is no technical reason for this it has just become the idiomatic approach that has emerged over time.
 
@@ -1304,14 +1860,14 @@ fn main() {
 }
 ```
 
-#### Name clashes
+#### Resolving Path name clashes
 
 If you are bringing two items with the same name but different parent modules into scope, you cannot use the above idiom and you need to either:-
 
 - Reference the parent modules.
 - Modify one or more of the names with the `as` keyword.
 
-### Creating name aliases with the `as` keyword
+#### Path name aliases
 
 One way to resolve name clashes, or simply provide a new name which you favour, is to rename an item with the `as` keyword.
 
@@ -1324,9 +1880,85 @@ fn function1() -> Result { ... }
 fn function2() -> IoResult<()> { ... }
 ```
 
-### Re-exporting Names with `pub use`
+#### Using external packages
 
-Consider the following code. In its current form, any external code would not be able to reach the `check_health()` function because the `routes` module is not public. 
+The standard library `std` is an external crate but since it is shipped as part of the Rust language you do not need to explicitly declare a dependency on it in _Cargo.toml_. However, you do need to bring items from the standard library into scope.
+
+```rust
+use std::collections::HashMap;
+```
+
+For all other external creates, making them available for your package to use follows these steps:-
+
+1. Declare the crate and version in _Cargo.toml_.
+2. Bring the items you want to use into scope with `use` paths.
+    
+```rust
+// Cargo.toml
+// Importing version 0.8.5 of Random create
+rand = "0.8.5"
+
+// some file - bring `Rng` trait into scope.
+use rand::Rng;
+
+fn main() {
+    let rand_num = rand::thread_rng().gen_range(1..=100);
+}
+```
+
+#### Nested Paths for concise imports
+
+Items from the same module can be grouped like this.
+
+```rust
+// instead of this
+use std::io.Read;
+use std::io.Write;
+// do this
+use std::io::{Read, Write];
+```
+
+If you want to bring the module into scope as well as some of its items then you can use `self`.
+
+```rust
+// instead of doing this
+use std::io;
+use std::io::Write;
+
+// you can do this
+use std::io::{self, Write};
+```
+
+Items from the same crate but with different paths can be brought into scope on a single line by using nested paths.
+
+```rust
+// instead of this
+use std::cmp::Ordering;
+use std::io;    
+
+// you can do this
+use std::{cmp::Ordering, io};
+```
+
+**Why bring a module like `std::io` into scope?**
+
+Refer to the "Idiomatic Function paths" section for more details - we typically bring modules into scope because we might want to invoke functions declared there.
+
+#### The Glob operator (`*`)
+
+You can bring _all_ public items defined in a path into scope using the glob operator.
+
+```rust
+use std::collections::*;
+```
+
+Take care when using the glob operator as it makes it more difficult to tell what is in scope and where something was defined.
+
+It is typically used when testing to bring everything under test into the `tests` module and also when using the [prelude pattern](https://doc.rust-lang.org/stable/std/prelude/index.html#other-preludes).
+
+#### Re-exporting paths
+
+Consider the following code. In its current form, any external code would not be able to reach the `check_health()` function because even though the function itself, and its parent module `health_route` are public the `routes` module which contains them is not public. 
 
 ```rust
 // crate's root module - src/lib.rs
@@ -1344,15 +1976,52 @@ pub fn run_checks() {
 }
 ```
 
-We could _re-export_ the `health_route` module from the root module by making the `use` statement public using `pub use`.
+Through the _re-exporting_ feature of Rust we do have the option of exposing otherwise private items. We could expose (aka re-export) the `health_route` module by making the path public using `pub use`. If our crate was called **router** (for example) then the following line would allow any external code to call `router::health_route::check_health()`.
 
 ```rust
 pub use crate::routes::health_route;
 ```
 
-Lets say our crate is called **router** any external code would now be able to call `router::health_route::check_health()`.
+Re-exporting allows you to expose internal items through a module's public interface using the `pub use` syntax and is a useful feature for:-
 
-Re-exporting is useful when the internal structure of your code is different from how programmers calling your code would think about the domain. In other words, using `pub use`, we can write our code with one structure but expose a different structure. This allows us to organise our code in a way in which it makes sense to the programmers working on it, but if this does not quite match how we wish programmers to use it then `pub use` allows us to expose a different view.
+1. Creating a more convenient public API.
+2. Organizing your code internally while presenting a different structure externally.
+3. Making deeply nested items available at a higher level
+
+The following is an example of how you can expose a different public API. `Circle` is positioned within a private `shapes` which intuitively makes sense for the structure of the project. You can expose a simple path to Circle however.
+
+```rust
+// In lib.rs of "my_crate"
+mod shapes {
+    pub struct Circle {
+        pub radius: f64,
+    }
+}
+
+// Re-export specific items from shapes
+pub use shapes::Circle;
+
+// Now users can do:
+use my_crate::Circle;
+// Instead of:
+use my_crate::shapes::Circle;
+```
+
+You can also export items (within your crate) from external crates, so users can import them as though they are importing them from your own crate. This is commonly used in the Rust ecosystem for convenience and is particularly iuseful when:-
+
+- Building a wrapper/facade library
+- Creating a unified API that combines multiple dependencies
+- Providing convenience exports for commonly used items
+
+```rust
+// your_library imports the Serde library and Reqwest
+pub use serde::{Serialize, Deserialize};
+pub use reqwest::Client as HttpClient;
+
+// Now users of your library can do:
+use your_library::Serialize;  // Instead of serde::Serialize
+use your_library::HttpClient; // Instead of reqwest::Client
+```
 
 ### Dependency Management
 
@@ -1426,51 +2095,6 @@ Note that it is possible to write platform-specific code that would prevent cros
 The [std::prelude](https://doc.rust-lang.org/std/prelude/index.html) is the set of utilities in the standard library that are automatically imported into every program without you needing to manually import them. This set is kept small and focussed and just includes features that are commonly used across all Rust programs.
 
 In addition to the standard library prelude, various other libraries have their own preludes eg. [std::io::prelude](https://doc.rust-lang.org/std/io/prelude/index.html) includes many common I/O traits so if you are writing some I/O heavy module you may want to just import the io::prelude rather than every part of the io library that you need. All these other preludes have to be manually imported into your modules.
-
-### Imports
-
-- Any feature not in the prelude of the standard libary that you want to use in your code has to be explicitly brought into scope with a `use` statement.
-
-### Re-exporting
-
-Re-exporting allows you to expose internal items through a module's public interface using the `pub use` syntax and is a useful feature for:-
-
-1. Creating a more convenient public API.
-2. Organizing your code internally while presenting a different structure externally.
-3. Making deeply nested items available at a higher level
-
-```
-// In lib.rs
-mod shapes {
-    pub struct Circle {
-        pub radius: f64,
-    }
-}
-
-// Re-export specific items from shapes
-pub use shapes::Circle;
-
-// Now users can do:
-use my_crate::Circle;
-// Instead of:
-use my_crate::shapes::Circle;
-```
-
-You can also export items (within your crate) from external crates, so users can import them as though they are importing them from your own crate. This is commonly used in the Rust ecosystem for convenience and is particularly iuseful when:-
-
-- Building a wrapper/facade library
-- Creating a unified API that combines multiple dependencies
-- Providing convenience exports for commonly used items
-
-```
-// your_library imports the Serde library and Reqwest
-pub use serde::{Serialize, Deserialize};
-pub use reqwest::Client as HttpClient;
-
-// Now users of your library can do:
-use your_library::Serialize;  // Instead of serde::Serialize
-use your_library::HttpClient; // Instead of reqwest::Client
-```
 
 ### Workspaces
 

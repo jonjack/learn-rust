@@ -14,8 +14,17 @@ fn main() {
 
     let s1 = String::from("hello");
     println!("s1 = {s1}");
-    some_func(s1);
-    println!("s1 = {s1}");
+
+    //some_func(s1);
+    //println!("s1 = {s1}");
+
+    let arr: [String; 2] = [String::from("hello"), String::from("world")];
+    println!("arr = {arr:?}");
+
+    let str1 = "Hello";
+
+    let str2 = String::from("initial contents");
+    str2 = "new".to_string();
 }
 
 fn some_func(s1: String) {
